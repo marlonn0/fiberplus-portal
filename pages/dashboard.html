@@ -29,7 +29,7 @@
             <li><a href="#"><i class="fas fa-hard-hat"></i> Mi Cuadrilla</a></li>
         </ul>
         <div class="sidebar-footer">
-            <a href="../../fiberplus-web/index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Salir del Sistema</a>
+            <a href="https://marlonn0.github.io/fiberplus-web/" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Salir del Sistema</a>
         </div>
     </aside>
 
@@ -40,15 +40,15 @@
                 <i class="fas fa-bars mobile-toggle" id="openSidebar"></i>
                 <h1>Gestión de Campo</h1>
             </div>
-            <div class="user-tag"><i class="fas fa-user-circle"></i> Operaciones</div>
+            <div class="user-tag"><i class="fas fa-user-circle"></i> Equipo Operaciones</div>
         </header>
 
         <section class="workspace">
             <div class="form-card">
                 
                 <div class="form-header">
-                    <h2>LIBRO DIARIO DE INSTALACIONES</h2>
-                    <p>Formulario Oficial Fiberplus V2. Complete todos los campos requeridos según la ejecución de hoy.</p>
+                    <h2>PRUEBA DE CONEXIÓN: LIBRO DIARIO</h2>
+                    <p>Llena estos datos para confirmar que se guardan en tu Google Sheets.</p>
                 </div>
 
                 <form id="libroDiarioForm">
@@ -57,102 +57,71 @@
                     <div class="grid-f">
                         <div class="f-group full">
                             <label>Ciudad *</label>
-                            <p class="h-tip">Escribe el nombre SIN ABREVIATURAS (Ejm: Ambato, Quito, Riobamba).</p>
                             <input type="text" name="ciudad" required placeholder="Ej: Quito">
                         </div>
                         <div class="f-group">
                             <label>Supervisor *</label>
-                            <p class="h-tip">Nombre y Apellido del responsable.</p>
-                            <input type="text" name="supervisor" required placeholder="Ej: Carlos Pérez">
+                            <input type="text" name="supervisor" required placeholder="Nombre del Supervisor">
                         </div>
                         <div class="f-group">
                             <label>Líder de Cuadrilla *</label>
-                            <p class="h-tip">Quien ejecuta en campo hoy.</p>
-                            <input type="text" name="lider_cuadrilla" required placeholder="Ej: Luis Gómez">
+                            <input type="text" name="lider_cuadrilla" required placeholder="Nombre del Líder">
                         </div>
                         
                         <div class="f-group full">
                             <label>Cliente *</label>
-                            <div class="radio-container">
-                                <label class="radio-box"><input type="radio" name="cliente" value="TELCONET" required><span>TELCONET</span></label>
-                                <label class="radio-box"><input type="radio" name="cliente" value="CNS"><span>CNS</span></label>
-                                <label class="radio-box"><input type="radio" name="cliente" value="PROCISA"><span>PROCISA</span></label>
-                                <label class="radio-box"><input type="radio" name="cliente" value="PUNTO NET"><span>PUNTO NET</span></label>
-                                <label class="radio-box"><input type="radio" name="cliente" value="FIS"><span>FIS</span></label>
-                                <label class="radio-box"><input type="radio" name="cliente" value="ULTRATEL"><span>ULTRATEL</span></label>
-                                <label class="radio-box"><input type="radio" name="cliente" value="OTROS"><span>OTROS</span></label>
-                            </div>
+                            <select name="cliente" required>
+                                <option value="" disabled selected>Seleccione cliente...</option>
+                                <option value="TELCONET">TELCONET</option>
+                                <option value="CNS">CNS</option>
+                                <option value="PROCISA">PROCISA</option>
+                                <option value="PUNTO NET">PUNTO NET</option>
+                                <option value="OTROS">OTROS</option>
+                            </select>
                         </div>
 
                         <div class="f-group full">
                             <label>Tarea / ID del Trabajo *</label>
-                            <p class="h-tip">Describe la ACTIVIDAD PRINCIPAL realizada en la jornada (Ejm: FP-0155).</p>
-                            <input type="text" name="tarea" required placeholder="ID de la Tarea">
+                            <input type="text" name="tarea" required placeholder="Ej: FP-2026-001">
                         </div>
                     </div>
 
-                    <div class="sec-title"><i class="fas fa-network-wired"></i> 2. MATERIAL EMPLEADO: CABLE FIBRA ÓPTICA</div>
+                    <div class="sec-title"><i class="fas fa-network-wired"></i> 2. FIBRA ÓPTICA</div>
                     <div class="grid-f">
                         <div class="f-group full">
-                            <label>¿Se utilizó Fibra Óptica? *</label>
-                            <div class="radio-container" style="flex-direction: row;">
-                                <label class="radio-box"><input type="radio" name="uso_fibra" value="SI" required><span>SÍ se utilizó</span></label>
-                                <label class="radio-box"><input type="radio" name="uso_fibra" value="NO"><span>NO se utilizó</span></label>
+                            <label>¿Se utilizó Fibra? *</label>
+                            <div class="radio-container">
+                                <label class="radio-box"><input type="radio" name="uso_fibra" value="SI" required><span>SÍ</span></label>
+                                <label class="radio-box"><input type="radio" name="uso_fibra" value="NO"><span>NO</span></label>
                             </div>
                         </div>
                         <div class="f-group">
                             <label>Tipo de Cable</label>
-                            <select name="tipo_cable">
-                                <option value="" disabled selected>Seleccione...</option>
-                                <option value="AEREOS">AÉREOS</option>
-                                <option value="CANALIZADO">CANALIZADO</option>
-                            </select>
+                            <input type="text" name="tipo_cable" placeholder="Ej: ADSS">
                         </div>
                         <div class="f-group">
                             <label>Número de Hilos</label>
-                            <select name="hilos">
-                                <option value="" disabled selected>Seleccione...</option>
-                                <option value="2">2</option>
-                                <option value="4">4</option>
-                                <option value="6">6</option>
-                                <option value="12">12</option>
-                                <option value="24">24</option>
-                                <option value="48">48</option>
-                                <option value="96">96</option>
-                                <option value="144">144</option>
-                            </select>
+                            <input type="number" name="hilos" placeholder="Ej: 12">
                         </div>
                     </div>
 
-                    <div class="sec-title"><i class="fas fa-traffic-cone"></i> 3. SEÑALIZACIÓN Y TRABAJO EN VÍA</div>
+                    <div class="sec-title"><i class="fas fa-traffic-cone"></i> 3. SEÑALIZACIÓN</div>
                     <div class="grid-f">
-                        <div class="f-group full">
-                            <label>Tipo de Señalización *</label>
-                            <div class="radio-container">
-                                <label class="radio-box"><input type="radio" name="senalizacion" value="Conos" required><span>Conos</span></label>
-                                <label class="radio-box"><input type="radio" name="senalizacion" value="Cinta de advertencia"><span>Cinta</span></label>
-                                <label class="radio-box"><input type="radio" name="senalizacion" value="Ninguna"><span>Ninguna</span></label>
-                            </div>
+                        <div class="f-group">
+                            <label>Señalización utilizada</label>
+                            <input type="text" name="senalizacion" placeholder="Ej: Conos y Cintas">
+                        </div>
+                        <div class="f-group">
+                            <label>Cantidad</label>
+                            <input type="number" name="cantidad_senalizacion" placeholder="0">
                         </div>
                         <div class="f-group full">
-                            <label>Cantidad Utilizada</label>
-                            <p class="h-tip">Especifique la cantidad de señalización empleada en la vía.</p>
-                            <input type="number" name="cantidad_senalizacion" placeholder="Ej: 5">
-                        </div>
-                    </div>
-
-                    <div class="sec-title"><i class="fas fa-laptop-house"></i> 4. OFICINA Y APOYO ADMINISTRATIVO</div>
-                    <div class="grid-f">
-                        <div class="f-group full">
-                            <label>Tipo de equipo utilizado</label>
-                            <div class="radio-container">
-                                <label class="radio-box"><input type="radio" name="oficina" value="Laptop"><span>Laptop</span></label>
-                                <label class="radio-box"><input type="radio" name="oficina" value="Utiles de escritorio"><span>Juego de útiles de escritorio</span></label>
-                            </div>
+                            <label>Oficina / Apoyo</label>
+                            <input type="text" name="oficina" placeholder="Ej: Laptop corporativa">
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-save">ENVIAR REPORTE DIARIO <i class="fas fa-paper-plane"></i></button>
+                    <button type="submit" class="btn-save" id="btnSubmit">ENVIAR REGRESO A EXCEL <i class="fas fa-paper-plane"></i></button>
 
                 </form>
             </div>
@@ -160,21 +129,38 @@
     </main>
 
     <script>
+        // Lógica Menú Móvil
         const sidebar = document.getElementById('sidebar');
         const openBtn = document.getElementById('openSidebar');
         const closeBtn = document.getElementById('closeSidebar');
 
-        openBtn.addEventListener('click', () => {
-            sidebar.classList.add('active');
-        });
+        openBtn.onclick = () => sidebar.classList.add('active');
+        closeBtn.onclick = () => sidebar.classList.remove('active');
 
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-        });
+        // ✅ CONEXIÓN REAL CON TU LINK DE GOOGLE SHEETS ✅
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw-7k2Ppx_Zr3IZDvz4ZB5GOQNzNxgyMIz8Ix9N5HjvaQLTJqlX6Rv0hkCZpLd54Tpt/exec';
+        const form = document.getElementById('libroDiarioForm');
+        const btnSubmit = document.getElementById('btnSubmit');
 
-        document.getElementById('libroDiarioForm').addEventListener('submit', function(e) {
+        form.addEventListener('submit', e => {
             e.preventDefault();
-            alert('Formulario listo. Mándame el siguiente bloque de preguntas del PDF para continuar.');
+            
+            btnSubmit.innerHTML = 'ENVIANDO DATOS... <i class="fas fa-spinner fa-spin"></i>';
+            btnSubmit.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    alert("✅ ¡ÉXITO! Los datos ya están en tu Google Sheets.");
+                    btnSubmit.innerHTML = 'ENVIAR REPORTE DIARIO <i class="fas fa-paper-plane"></i>';
+                    btnSubmit.disabled = false;
+                    form.reset();
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert("❌ ERROR: No se pudo enviar. Verifica tu conexión.");
+                    btnSubmit.innerHTML = 'REINTENTAR ENVÍO <i class="fas fa-paper-plane"></i>';
+                    btnSubmit.disabled = false;
+                });
         });
     </script>
 </body>
