@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro Diario | Portal Operativo Fiberplus</title>
+    
+    <link rel="icon" type="image/png" href="../../fiberplus-web/assets/img/logo-mini.png">
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">FP</div>
+            <div class="brand-text">
+                <h2>FIBERPLUS</h2>
+                <p>Sistema Operativo</p>
+            </div>
+            <i class="fas fa-times mobile-toggle" id="closeSidebar" style="color: white; margin-left: auto;"></i>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active"><i class="fas fa-file-signature"></i> Libro Diario</a></li>
+            <li><a href="#"><i class="fas fa-history"></i> Mis Registros</a></li>
+            <li><a href="#"><i class="fas fa-tools"></i> Inventario Bodega</a></li>
+            <li><a href="#"><i class="fas fa-hard-hat"></i> Mi Cuadrilla</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="../../fiberplus-web/index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Salir del Sistema</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-bars mobile-toggle" id="openSidebar"></i>
+                <h1>Gestión de Campo</h1>
+            </div>
+            <div class="user-tag"><i class="fas fa-user-circle"></i> Operaciones</div>
+        </header>
+
+        <section class="workspace">
+            <div class="form-card">
+                
+                <div class="form-header">
+                    <h2>LIBRO DIARIO DE INSTALACIONES</h2>
+                    <p>Formulario Oficial Fiberplus V2. Complete todos los campos requeridos según la ejecución de hoy.</p>
+                </div>
+
+                <form id="libroDiarioForm">
+                    
+                    <div class="sec-title"><i class="fas fa-info-circle"></i> 1. DATOS GENERALES</div>
+                    <div class="grid-f">
+                        <div class="f-group full">
+                            <label>Ciudad *</label>
+                            <p class="h-tip">Escribe el nombre SIN ABREVIATURAS (Ejm: Ambato, Quito, Riobamba).</p>
+                            <input type="text" name="ciudad" required placeholder="Ej: Quito">
+                        </div>
+                        <div class="f-group">
+                            <label>Supervisor *</label>
+                            <p class="h-tip">Nombre y Apellido del responsable.</p>
+                            <input type="text" name="supervisor" required placeholder="Ej: Carlos Pérez">
+                        </div>
+                        <div class="f-group">
+                            <label>Líder de Cuadrilla *</label>
+                            <p class="h-tip">Quien ejecuta en campo hoy.</p>
+                            <input type="text" name="lider_cuadrilla" required placeholder="Ej: Luis Gómez">
+                        </div>
+                        
+                        <div class="f-group full">
+                            <label>Cliente *</label>
+                            <div class="radio-container">
+                                <label class="radio-box"><input type="radio" name="cliente" value="TELCONET" required><span>TELCONET</span></label>
+                                <label class="radio-box"><input type="radio" name="cliente" value="CNS"><span>CNS</span></label>
+                                <label class="radio-box"><input type="radio" name="cliente" value="PROCISA"><span>PROCISA</span></label>
+                                <label class="radio-box"><input type="radio" name="cliente" value="PUNTO NET"><span>PUNTO NET</span></label>
+                                <label class="radio-box"><input type="radio" name="cliente" value="FIS"><span>FIS</span></label>
+                                <label class="radio-box"><input type="radio" name="cliente" value="ULTRATEL"><span>ULTRATEL</span></label>
+                                <label class="radio-box"><input type="radio" name="cliente" value="OTROS"><span>OTROS</span></label>
+                            </div>
+                        </div>
+
+                        <div class="f-group full">
+                            <label>Tarea / ID del Trabajo *</label>
+                            <p class="h-tip">Describe la ACTIVIDAD PRINCIPAL realizada en la jornada (Ejm: FP-0155).</p>
+                            <input type="text" name="tarea" required placeholder="ID de la Tarea">
+                        </div>
+                    </div>
+
+                    <div class="sec-title"><i class="fas fa-network-wired"></i> 2. MATERIAL EMPLEADO: CABLE FIBRA ÓPTICA</div>
+                    <div class="grid-f">
+                        <div class="f-group full">
+                            <label>¿Se utilizó Fibra Óptica? *</label>
+                            <div class="radio-container" style="flex-direction: row;">
+                                <label class="radio-box"><input type="radio" name="uso_fibra" value="SI" required><span>SÍ se utilizó</span></label>
+                                <label class="radio-box"><input type="radio" name="uso_fibra" value="NO"><span>NO se utilizó</span></label>
+                            </div>
+                        </div>
+                        <div class="f-group">
+                            <label>Tipo de Cable</label>
+                            <select name="tipo_cable">
+                                <option value="" disabled selected>Seleccione...</option>
+                                <option value="AEREOS">AÉREOS</option>
+                                <option value="CANALIZADO">CANALIZADO</option>
+                            </select>
+                        </div>
+                        <div class="f-group">
+                            <label>Número de Hilos</label>
+                            <select name="hilos">
+                                <option value="" disabled selected>Seleccione...</option>
+                                <option value="2">2</option>
+                                <option value="4">4</option>
+                                <option value="6">6</option>
+                                <option value="12">12</option>
+                                <option value="24">24</option>
+                                <option value="48">48</option>
+                                <option value="96">96</option>
+                                <option value="144">144</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sec-title"><i class="fas fa-traffic-cone"></i> 3. SEÑALIZACIÓN Y TRABAJO EN VÍA</div>
+                    <div class="grid-f">
+                        <div class="f-group full">
+                            <label>Tipo de Señalización *</label>
+                            <div class="radio-container">
+                                <label class="radio-box"><input type="radio" name="senalizacion" value="Conos" required><span>Conos</span></label>
+                                <label class="radio-box"><input type="radio" name="senalizacion" value="Cinta de advertencia"><span>Cinta</span></label>
+                                <label class="radio-box"><input type="radio" name="senalizacion" value="Ninguna"><span>Ninguna</span></label>
+                            </div>
+                        </div>
+                        <div class="f-group full">
+                            <label>Cantidad Utilizada</label>
+                            <p class="h-tip">Especifique la cantidad de señalización empleada en la vía.</p>
+                            <input type="number" name="cantidad_senalizacion" placeholder="Ej: 5">
+                        </div>
+                    </div>
+
+                    <div class="sec-title"><i class="fas fa-laptop-house"></i> 4. OFICINA Y APOYO ADMINISTRATIVO</div>
+                    <div class="grid-f">
+                        <div class="f-group full">
+                            <label>Tipo de equipo utilizado</label>
+                            <div class="radio-container">
+                                <label class="radio-box"><input type="radio" name="oficina" value="Laptop"><span>Laptop</span></label>
+                                <label class="radio-box"><input type="radio" name="oficina" value="Utiles de escritorio"><span>Juego de útiles de escritorio</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-save">ENVIAR REPORTE DIARIO <i class="fas fa-paper-plane"></i></button>
+
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const openBtn = document.getElementById('openSidebar');
+        const closeBtn = document.getElementById('closeSidebar');
+
+        openBtn.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+
+        document.getElementById('libroDiarioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Formulario listo. Mándame el siguiente bloque de preguntas del PDF para continuar.');
+        });
+    </script>
+</body>
+</html>

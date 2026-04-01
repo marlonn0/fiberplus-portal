@@ -1,0 +1,162 @@
+/* =========================================
+   ESTILOS DEL DASHBOARD Y FORMULARIO
+   Archivo: css/dashboard.css
+   ========================================= */
+
+/* --- SIDEBAR LATERAL (Menú Oscuro) --- */
+.sidebar { 
+    width: 280px; 
+    background-color: var(--dark); 
+    color: var(--white); 
+    display: flex; 
+    flex-direction: column; 
+    z-index: 100; 
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.sidebar-brand { 
+    padding: 30px 20px; 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    border-bottom: 1px solid var(--dark-soft); 
+}
+.sidebar-logo { 
+    width: 45px; height: 45px; 
+    background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+    border-radius: 10px; 
+    display: flex; justify-content: center; align-items: center; 
+    font-weight: 900; font-size: 1.4rem; color: var(--white);
+}
+.brand-text h2 { font-size: 1.2rem; font-weight: 900; letter-spacing: 1px;}
+.brand-text p { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;}
+
+.sidebar-menu { list-style: none; padding: 30px 0; flex-grow: 1; overflow-y: auto;}
+.sidebar-menu li a { 
+    display: flex; align-items: center; gap: 15px; padding: 18px 30px; 
+    color: #94a3b8; text-decoration: none; font-weight: 700; 
+    transition: 0.3s; border-left: 5px solid transparent; font-size: 1.05rem;
+}
+.sidebar-menu li a:hover, .sidebar-menu li a.active { 
+    color: var(--white); background: rgba(255,255,255,0.05); border-left-color: var(--primary); 
+}
+.sidebar-menu i { font-size: 1.2rem; width: 25px; text-align: center; }
+
+.sidebar-footer { padding: 30px; border-top: 1px solid var(--dark-soft); }
+.logout-btn { 
+    color: var(--danger); text-decoration: none; font-weight: 800; 
+    display: flex; align-items: center; gap: 10px; transition: 0.3s;
+}
+.logout-btn:hover { color: #f87171; }
+
+/* --- CONTENIDO PRINCIPAL Y BARRA SUPERIOR --- */
+.main-content { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { 
+    background: var(--white); height: 80px; padding: 0 40px; 
+    display: flex; justify-content: space-between; align-items: center; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 10;
+}
+.topbar h1 { font-size: 1.5rem; font-weight: 900; color: var(--dark);}
+.user-tag { 
+    background: #e0f2fe; color: #0284c7; padding: 8px 15px; 
+    border-radius: 20px; font-weight: 800; font-size: 0.9rem; 
+    display: flex; align-items: center; gap: 8px;
+}
+
+.mobile-toggle { display: none; font-size: 1.5rem; color: var(--dark); cursor: pointer; }
+
+/* --- ÁREA DE TRABAJO (El fondo gris detrás de la tarjeta) --- */
+.workspace { padding: 40px; overflow-y: auto; flex-grow: 1; }
+
+/* --- TARJETA BLANCA DEL FORMULARIO --- */
+.form-card { 
+    background: var(--white); padding: 50px; border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 1000px; 
+    margin: 0 auto; border-top: 8px solid var(--primary);
+}
+
+.form-header { border-bottom: 2px solid var(--light-bg); padding-bottom: 20px; margin-bottom: 30px; text-align: center;}
+.form-header h2 { color: var(--dark); font-size: 2rem; font-weight: 900; text-transform: uppercase;}
+.form-header p { color: var(--text-muted); font-size: 1rem; margin-top: 5px; }
+
+/* --- ESTILOS DE LOS CAMPOS Y PREGUNTAS --- */
+.sec-title { 
+    background: var(--dark-soft); color: var(--white); padding: 15px 25px; 
+    border-radius: 8px; font-weight: 900; margin: 40px 0 25px 0; 
+    text-transform: uppercase; font-size: 1.1rem; display: flex; 
+    align-items: center; gap: 10px;
+}
+.sec-title i { color: var(--primary); }
+
+.grid-f { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.f-group { display: flex; flex-direction: column; }
+.full { grid-column: span 2; }
+
+label { font-weight: 800; color: #334155; margin-bottom: 8px; font-size: 1rem;}
+.h-tip { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; font-style: italic; margin-top: -5px;}
+
+/* Inputs de texto, números y listas desplegables */
+input[type="text"], input[type="number"], select, textarea { 
+    padding: 15px; border: 2px solid var(--border-color); border-radius: 8px; 
+    font-size: 1rem; outline: none; transition: 0.3s; 
+    background: #f8fafc; font-family: inherit; color: var(--dark); font-weight: 600;
+}
+input:focus, select:focus, textarea:focus { 
+    border-color: var(--primary); background: var(--white); 
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1); 
+}
+
+/* Opciones de Selección (Radios en formato de botón moderno) */
+.radio-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px;}
+.radio-box { display: inline-block; position: relative; cursor: pointer; flex-grow: 1; text-align: center;}
+.radio-box input { display: none; }
+.radio-box span { 
+    display: block; padding: 12px 20px; border: 2px solid var(--border-color); 
+    border-radius: 8px; background: #f8fafc; font-weight: 700; 
+    color: var(--text-muted); transition: 0.3s; 
+}
+.radio-box input:checked + span { 
+    background: var(--primary); color: var(--white); border-color: var(--primary); 
+    box-shadow: 0 4px 10px rgba(20, 184, 166, 0.3); 
+}
+
+/* Botón de Enviar Formulario */
+.btn-save { 
+    background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); 
+    border: none; padding: 20px; border-radius: 10px; font-weight: 900; 
+    font-size: 1.2rem; cursor: pointer; width: 100%; margin-top: 50px; 
+    transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; 
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+}
+.btn-save:hover { 
+    transform: translateY(-3px); box-shadow: 0 15px 25px rgba(14, 165, 233, 0.4); 
+    filter: brightness(1.1);
+}
+
+/* =========================================
+   DISEÑO RESPONSIVE (CELULARES Y TABLETS)
+   ========================================= */
+@media (max-width: 900px) {
+    body { flex-direction: column; overflow: auto;}
+    
+    /* El menú lateral se oculta en celulares y se vuelve deslizable */
+    .sidebar { 
+        position: fixed; left: -100%; top: 0; height: 100%; 
+        transition: 0.3s; z-index: 1000;
+    }
+    .sidebar.active { left: 0; }
+    
+    .mobile-toggle { display: block; }
+    .topbar { padding: 0 20px; }
+    .topbar h1 { font-size: 1.2rem; }
+
+    /* La tarjeta del formulario se adapta al ancho de la pantalla */
+    .workspace { padding: 20px; }
+    .form-card { padding: 30px 20px; }
+    
+    /* Las preguntas de 2 columnas pasan a 1 sola columna */
+    .grid-f { grid-template-columns: 1fr; gap: 20px;}
+    .full { grid-column: span 1; }
+    
+    .radio-container { flex-direction: column; }
+}
