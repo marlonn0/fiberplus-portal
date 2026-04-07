@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Cables | Portal FiberPlus</title>
+  <link rel="stylesheet" href="../css/formulario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="hero-header">
+        <div class="hero-logo-card">
+          <img src="../assets/img/logo-fiberplus.png" alt="FiberPlus" class="hero-logo" onerror="this.style.display='none'; alert('Error en la imagen');">
+        </div>
+        <div class="hero-title-block">
+          <span class="hero-label">FiberPlus</span>
+          <h1 class="hero-title">Libro Diario de Instalaciones</h1>
+          <p class="hero-description">Registro técnico y operativo de actividades en campo.</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-wrapper">
+      <div class="nav-container">
+        <a href="1_datos.html" class="nav-item"><i class="fas fa-clipboard-list"></i> <span>Datos</span></a>
+        <a href="2_cables.html" class="nav-item active"><i class="fas fa-plug"></i> <span>Cables</span></a>
+        <a href="3_materiales.html" class="nav-item"><i class="fas fa-boxes"></i> <span>Materiales</span></a>
+        <a href="4_herramientas.html" class="nav-item"><i class="fas fa-tools"></i> <span>Herramientas</span></a>
+        <a href="5_enviar.html" class="nav-item"><i class="fas fa-paper-plane"></i> <span>Enviar</span></a>
+      </div>
+    </nav>
+
+    <section id="material-cable" class="card glass-card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-ethernet"></i></div>
+          <div><h2>Materiales de cable</h2><p class="subtle">Registra fibra óptica, cable cobre o acerado</p></div>
+        </div>
+        <span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">Opcional</span>
+      </div>
+
+      <div class="cable-selector">
+        <div class="selector-tabs">
+          <button class="selector-tab active" data-cable="fibra" onclick="switchCableType('fibra')"><i class="fas fa-fiber"></i> Fibra óptica</button>
+          <button class="selector-tab" data-cable="cobre" onclick="switchCableType('cobre')"><i class="fas fa-wire"></i> Cable cobre</button>
+          <button class="selector-tab" data-cable="acerado" onclick="switchCableType('acerado')"><i class="fas fa-link"></i> Cable acerado</button>
+        </div>
+
+        <div id="form-fibra" class="cable-form active">
+          <div class="form-grid">
+            <div class="form-group"><label>Tipo de fibra</label><select id="fibraTipo" class="form-input"><option value="">Seleccione...</option><option>AÉREOS</option><option>CANALIZADO</option></select></div>
+            <div class="form-group"><label>Código de bobina</label><input id="fibraBobina" type="text" placeholder="Código" class="form-input" /></div>
+            <div class="form-group"><label>N° hilos</label><select id="fibraHilos" class="form-input"><option value="">Seleccione...</option><option>2</option><option>4</option><option>6</option><option>12</option><option>24</option><option>48</option><option>96</option><option>144</option></select></div>
+            <div class="form-group mobile-hide"></div>
+            <div class="form-group"><label><i class="fas fa-truck"></i> Despacho (m)</label><input id="fibraDespacho" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto despacho</label><input id="fibraFotoDespacho" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-check-circle"></i> Utilizado (m)</label><input id="fibraUtilizado" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group mobile-hide"></div>
+            <div class="form-group"><label><i class="fas fa-undo-alt"></i> Devuelto (m)</label><input id="fibraDevuelto" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto devuelto</label><input id="fibraFotoDevuelto" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-map-marker-alt"></i> Punto inicial</label><input id="fibraPuntoInicial" type="number" step="1" placeholder="Ej. 100" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto punto inicial</label><input id="fibraFotoInicial" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-flag-checkered"></i> Punto final</label><input id="fibraPuntoFinal" type="number" step="1" placeholder="Ej. 250" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto punto final</label><input id="fibraFotoFinal" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+          </div>
+          <button class="btn-add" onclick="addCable('fibra')"><i class="fas fa-plus-circle"></i> Agregar Fibra Óptica a la lista</button>
+        </div>
+
+        <div id="form-cobre" class="cable-form">
+          <div class="form-grid">
+            <div class="form-group"><label>Tipo de cable</label><select id="cobreTipo" class="form-input"><option value="">Seleccione...</option><option>CAT 5</option><option>CAT 6</option><option>CAT 6A</option></select></div>
+            <div class="form-group mobile-hide"></div>
+            <div class="form-group"><label><i class="fas fa-truck"></i> Despacho (m)</label><input id="cobreDespacho" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto despacho</label><input id="cobreFotoDespacho" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-check-circle"></i> Utilizado (m)</label><input id="cobreUtilizado" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group mobile-hide"></div>
+            <div class="form-group"><label><i class="fas fa-undo-alt"></i> Devuelto (m)</label><input id="cobreDevuelto" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto devuelto</label><input id="cobreFotoDevuelto" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-map-marker-alt"></i> Punto inicial</label><input id="cobrePuntoInicial" type="number" step="1" placeholder="Ej. 100" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto punto inicial</label><input id="cobreFotoInicial" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-flag-checkered"></i> Punto final</label><input id="cobrePuntoFinal" type="number" step="1" placeholder="Ej. 250" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto punto final</label><input id="cobreFotoFinal" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+          </div>
+          <button class="btn-add" onclick="addCable('cobre')"><i class="fas fa-plus-circle"></i> Agregar Cable Cobre a la lista</button>
+        </div>
+
+        <div id="form-acerado" class="cable-form">
+          <div class="form-grid">
+            <div class="form-group"><label><i class="fas fa-truck"></i> Despacho (m)</label><input id="aceradoM1" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto despacho</label><input id="aceradoFotoDespacho" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+            <div class="form-group"><label><i class="fas fa-check-circle"></i> Utilizado (m)</label><input id="aceradoM2" type="number" step="1" placeholder="00" class="form-input" /></div>
+            <div class="form-group"><label><i class="fas fa-camera"></i> Foto utilizado</label><input id="aceradoFotoUtilizado" type="file" accept="image/*" capture="environment" class="form-input" style="padding: 12px;" /></div>
+          </div>
+          <button class="btn-add" onclick="addCable('acerado')"><i class="fas fa-plus-circle"></i> Agregar Cable Acerado a la lista</button>
+        </div>
+      </div>
+
+      <div id="cable-list" class="list-container"></div>
+
+      <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--border-color); flex-wrap: wrap;">
+        <button class="btn-secondary" onclick="window.location.href='1_datos.html'" style="flex: 0 1 auto; padding: 15px 25px;"><i class="fas fa-arrow-left"></i> Paso Anterior</button>
+        <button class="btn-add" onclick="window.location.href='3_materiales.html'" style="margin-top: 0; flex: 1; font-size: 1.15rem;">SIGUIENTE PASO <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </section>
+  </div>
+  
+  <script src="../js/app.js"></script>
+  <style> @media (max-width: 768px) { .mobile-hide { display: none; } } </style>
+</body>
+</html>

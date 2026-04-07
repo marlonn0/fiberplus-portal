@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Enviar Formulario | Portal FiberPlus</title>
+  <link rel="stylesheet" href="../css/formulario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="hero-header">
+        <div class="hero-logo-card"><img src="../assets/img/logo-fiberplus.png" alt="FiberPlus" class="hero-logo" onerror="this.style.display='none'; alert('Error en la imagen');"></div>
+        <div class="hero-title-block">
+          <span class="hero-label">FiberPlus</span>
+          <h1 class="hero-title">Libro Diario de Instalaciones</h1>
+          <p class="hero-description">Registro técnico y operativo de actividades en campo.</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-wrapper">
+      <div class="nav-container">
+        <a href="1_datos.html" class="nav-item"><i class="fas fa-clipboard-list"></i> <span>Datos</span></a>
+        <a href="2_cables.html" class="nav-item"><i class="fas fa-plug"></i> <span>Cables</span></a>
+        <a href="3_materiales.html" class="nav-item"><i class="fas fa-boxes"></i> <span>Materiales</span></a>
+        <a href="4_herramientas.html" class="nav-item"><i class="fas fa-tools"></i> <span>Herramientas</span></a>
+        <a href="5_enviar.html" class="nav-item active"><i class="fas fa-paper-plane"></i> <span>Enviar</span></a>
+      </div>
+    </nav>
+
+    <section id="enviar-formulario" class="card glass-card">
+      <div class="section-header" style="border-bottom: none; margin-bottom: 10px;">
+        <div class="header-left"><div class="header-icon"><i class="fas fa-paper-plane"></i></div><div><h2>Procesar y Enviar</h2><p class="subtle">Revisa el resumen antes de subirlo a la nube.</p></div></div>
+      </div>
+
+      <div style="background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--border-color);">
+        <h3 style="margin-bottom: 15px; color: var(--dark); font-size: 1.2rem;"><i class="fas fa-clipboard-check" style="color: var(--primary);"></i> Resumen de datos en memoria:</h3>
+        <p style="font-size: 1.05rem; color: var(--dark-soft); margin-bottom: 10px;"><i class="fas fa-plug" style="width: 25px; color: #64748b;"></i> <strong>Cables registrados:</strong> <span id="resumenCables" style="color: var(--primary); font-weight: 800;">0</span></p>
+        <p style="font-size: 1.05rem; color: var(--dark-soft); margin-bottom: 10px;"><i class="fas fa-boxes" style="width: 25px; color: #64748b;"></i> <strong>Materiales registrados:</strong> <span id="resumenMateriales" style="color: var(--primary); font-weight: 800;">0</span></p>
+        <p style="font-size: 1.05rem; color: var(--dark-soft); margin-bottom: 10px;"><i class="fas fa-tools" style="width: 25px; color: #64748b;"></i> <strong>Herramientas registradas:</strong> <span id="resumenHerramientas" style="color: var(--primary); font-weight: 800;">0</span></p>
+      </div>
+
+      <div class="action-buttons" style="display: flex; flex-direction: column; gap: 15px; margin: 0;">
+        <button class="btn-add" type="button" onclick="enviarGoogleSheets()" style="font-size: 1.2rem; padding: 20px;">
+          <i class="fas fa-cloud-upload-alt"></i> ENVIAR DATOS A GOOGLE SHEETS
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--border-color); flex-wrap: wrap;">
+        <button class="btn-secondary" onclick="window.location.href='4_herramientas.html'" style="flex: 0 1 auto; padding: 15px 25px;"><i class="fas fa-arrow-left"></i> Volver a Herramientas</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="../js/app.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('resumenCables').innerText = state.cables.length;
+      document.getElementById('resumenMateriales').innerText = state.materials.length;
+      document.getElementById('resumenHerramientas').innerText = state.tools.length;
+    });
+
+    function enviarGoogleSheets() {
+      const f = (localStorage.getItem('fp_input_fecha') || '').trim();
+      const c = (localStorage.getItem('fp_input_ciudad') || '').trim();
+      const s = (localStorage.getItem('fp_input_supervisor') || '').trim();
+      const l = (localStorage.getItem('fp_input_lider') || '').trim();
+      const cl = (localStorage.getItem('fp_input_cliente') || '').trim();
+      const t = (localStorage.getItem('fp_input_tarea') || '').trim();
+
+      let faltan = [];
+      if (f === '') faltan.push("Fecha");
+      if (c === '') faltan.push("Ciudad");
+      if (s === '') faltan.push("Supervisor");
+      if (l === '') faltan.push("Líder");
+      if (cl === '') faltan.push("Cliente");
+      if (t === '') faltan.push("Tarea/ID");
+
+      if (faltan.length > 0) {
+        showToast("Error: Faltan datos en el Paso 1 (" + faltan.join(", ") + ")", "error");
+        setTimeout(() => { window.location.href = "1_datos.html"; }, 2500);
+        return; 
+      }
+
+      if (cl === "OTROS") {
+        const oCl = (localStorage.getItem('fp_input_otroCliente') || '').trim();
+        if (oCl === '') {
+          showToast("Error: Elegiste 'OTROS' en Cliente, pero no escribiste cuál.", "error");
+          setTimeout(() => { window.location.href = "1_datos.html"; }, 2500);
+          return; 
+        }
+      }
+
+      alert("✅ ¡Validación superada! Todos los datos están perfectos. Listo para Google Sheets.");
+    }
+  </script>
+</body>
+</html>

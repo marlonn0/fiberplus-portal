@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Datos Generales | Portal FiberPlus</title>
+  <link rel="stylesheet" href="../css/formulario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    
+    <header class="topbar">
+      <div class="hero-header">
+        <div class="hero-logo-card">
+          <img src="../assets/img/logo-fiberplus.png" alt="FiberPlus" class="hero-logo" onerror="this.style.display='none'; alert('Error: Revisa que el logo se llame exactamente logo-fiberplus.png');">
+        </div>
+        <div class="hero-title-block">
+          <span class="hero-label">FiberPlus</span>
+          <h1 class="hero-title">Libro Diario de Instalaciones</h1>
+          <p class="hero-description">Registro técnico y operativo de actividades en campo.</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-wrapper">
+      <div class="nav-container">
+        <a href="1_datos.html" class="nav-item active"><i class="fas fa-clipboard-list"></i> <span>Datos</span></a>
+        <a href="#" class="nav-item" onclick="validarYContinuar(event, '2_cables.html')"><i class="fas fa-plug"></i> <span>Cables</span></a>
+        <a href="#" class="nav-item" onclick="validarYContinuar(event, '3_materiales.html')"><i class="fas fa-boxes"></i> <span>Materiales</span></a>
+        <a href="#" class="nav-item" onclick="validarYContinuar(event, '4_herramientas.html')"><i class="fas fa-tools"></i> <span>Herramientas</span></a>
+        <a href="#" class="nav-item" onclick="validarYContinuar(event, '5_enviar.html')"><i class="fas fa-paper-plane"></i> <span>Enviar</span></a>
+      </div>
+    </nav>
+
+    <section id="cabecera" class="card glass-card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div><h2>Datos del día</h2><p class="subtle">Complete la información general de la jornada</p></div>
+        </div>
+        <span class="badge">Obligatorio</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label><i class="fas fa-calendar"></i> Fecha *</label>
+          <input id="fecha" type="date" class="form-input obligatorio" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-location-dot"></i> Ciudad *</label>
+          <input id="ciudad" type="text" placeholder="Ej. Ambato" class="form-input obligatorio" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-user-check"></i> Supervisor *</label>
+          <input id="supervisor" type="text" placeholder="Apellido y Nombre" class="form-input obligatorio" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-users"></i> Líder de cuadrilla *</label>
+          <input id="lider" type="text" placeholder="Apellido y Nombre" class="form-input obligatorio" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-building"></i> Cliente *</label>
+          <select id="cliente" class="form-input obligatorio" onchange="mostrarCampoOtroCliente()">
+            <option value="">Seleccione...</option>
+            <option>TELCONET</option>
+            <option>CNS</option>
+            <option>PROCISA</option>
+            <option>PUNTO NET</option>
+            <option>FIS</option>
+            <option>ULTRATEL</option>
+            <option value="OTROS">OTROS</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="divOtroCliente" style="display: none;">
+            <label><i class="fas fa-pen"></i> Especificar cliente *</label>
+            <input id="otroCliente" type="text" placeholder="Escriba el nombre del cliente" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-tasks"></i> Tarea / ID del trabajo *</label>
+          <input id="tarea" type="text" placeholder="Ej. FP-0155" class="form-input obligatorio" />
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label><i class="fas fa-comment-dots"></i> Observaciones generales (Opcional)</label>
+        <textarea id="observacionesGenerales" rows="3" placeholder="Novedades, incidentes o comentarios..." class="form-input"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--border-color); flex-wrap: wrap;">
+        <button class="btn-danger" onclick="resetAll()" style="flex: 0 1 auto; padding: 15px 25px;">
+          <i class="fas fa-trash-alt"></i> Limpiar Todo
+        </button>
+        <button class="btn-add" onclick="validarYContinuar(event, '2_cables.html')" style="margin-top: 0; flex: 1; font-size: 1.15rem;">
+          SIGUIENTE PASO <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="../js/app.js"></script>
+
+  <script>
+    function mostrarCampoOtroCliente() {
+      const clienteSelect = document.getElementById("cliente");
+      const divOtroCliente = document.getElementById("divOtroCliente");
+      const otroClienteInput = document.getElementById("otroCliente");
+
+      if (clienteSelect.value === "OTROS") {
+        divOtroCliente.style.display = "flex";
+        otroClienteInput.classList.add("obligatorio");
+      } else {
+        divOtroCliente.style.display = "none";
+        otroClienteInput.classList.remove("obligatorio");
+        otroClienteInput.value = "";
+        otroClienteInput.style.borderColor = "var(--border-color)";
+      }
+    }
+
+    function validarYContinuar(e, urlDestino) {
+      if (e) e.preventDefault();
+      let todoValido = true;
+      const camposObligatorios = document.querySelectorAll('.obligatorio');
+
+      camposObligatorios.forEach(campo => {
+        if (campo.value.trim() === '') {
+          todoValido = false;
+          campo.style.borderColor = 'var(--danger)';
+          campo.style.backgroundColor = '#fef2f2';
+        } else {
+          campo.style.borderColor = 'var(--border-color)';
+          campo.style.backgroundColor = '#f8fafc';
+        }
+      });
+
+      if (todoValido) {
+        window.location.href = urlDestino;
+      } else {
+        showToast("Error: Faltan campos obligatorios marcados en rojo.", "error");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    document.querySelectorAll('.obligatorio').forEach(campo => {
+      campo.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          this.style.borderColor = 'var(--primary)';
+          this.style.backgroundColor = '#ffffff';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

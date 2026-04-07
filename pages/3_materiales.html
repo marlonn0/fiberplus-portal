@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Materiales | Portal FiberPlus</title>
+  <link rel="stylesheet" href="../css/formulario.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="hero-header">
+        <div class="hero-logo-card"><img src="../assets/img/logo-fiberplus.png" alt="FiberPlus" class="hero-logo" onerror="this.style.display='none'; alert('Error en la imagen');"></div>
+        <div class="hero-title-block">
+          <span class="hero-label">FiberPlus</span>
+          <h1 class="hero-title">Libro Diario de Instalaciones</h1>
+          <p class="hero-description">Registro técnico y operativo de actividades en campo.</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-wrapper">
+      <div class="nav-container">
+        <a href="1_datos.html" class="nav-item"><i class="fas fa-clipboard-list"></i> <span>Datos</span></a>
+        <a href="2_cables.html" class="nav-item"><i class="fas fa-plug"></i> <span>Cables</span></a>
+        <a href="3_materiales.html" class="nav-item active"><i class="fas fa-boxes"></i> <span>Materiales</span></a>
+        <a href="4_herramientas.html" class="nav-item"><i class="fas fa-tools"></i> <span>Herramientas</span></a>
+        <a href="5_enviar.html" class="nav-item"><i class="fas fa-paper-plane"></i> <span>Enviar</span></a>
+      </div>
+    </nav>
+
+    <section id="grupo-material" class="card glass-card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-cubes"></i></div>
+          <div><h2>Materiales instalados</h2><p class="subtle">Registra los materiales utilizados en la jornada</p></div>
+        </div>
+        <span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">Opcional</span>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label>Tipo de material general</label>
+        <select id="materialGroup" class="form-input" onchange="handleGroupChange()">
+          <option value="">Seleccione el grupo...</option>
+          <option>Amarras o correas plásticas</option><option>Anillos / argollas</option><option>Brazo farol</option>
+          <option>Cajas / NAP</option><option>Cintas</option><option>Espirales</option><option>Galerías / soportes</option>
+          <option>Grilletes / guardacabos</option><option>Hebillas</option><option>Herrajes</option><option>Identificadores</option>
+          <option>Kits de bajante</option><option>Mangas porta splitter</option><option>Mangueras / manguitas</option>
+          <option>ODF (N° de puertos con pacheo lateral)</option><option>Postes</option><option>Preformados</option>
+          <option>Rack</option><option>Rondín</option><option>Splitters (1/8)</option>
+        </select>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label id="materialTypeLabel">Detalle específico del material</label>
+          <select id="materialType" class="form-input" onchange="handleMaterialTypeChange()"><option value="">Primero selecciona el grupo arriba...</option></select>
+        </div>
+        <div class="form-group" id="brazoFarolExtensionGroup" style="display: none;">
+          <label>N° extensión (Solo Brazo Farol)</label>
+          <select id="brazoFarolExtension" class="form-input"><option value="">Seleccione...</option><option value="1 extensión">1 extensión</option><option value="2 extensiones">2 extensiones</option><option value="3 extensiones">3 extensiones</option><option value="4 extensiones">4 extensiones</option><option value="5 extensiones">5 extensiones</option><option value="6 extensiones">6 extensiones</option></select>
+        </div>
+        <div class="form-group"><label>Cantidad utilizada</label><input id="materialQty" type="number" step="1" placeholder="Ej: 5" class="form-input" /></div>
+        <div class="form-group"><label id="materialOtherLabel">Tipo alterno / Otro</label><input id="materialOther" type="text" placeholder="Solo si no está en la lista" class="form-input" /></div>
+        <div class="form-group full-width"><label>Observación (Opcional)</label><input id="materialObs" type="text" placeholder="Algún detalle adicional" class="form-input" /></div>
+      </div>
+      <button class="btn-add" onclick="addGroupMaterial()"><i class="fas fa-plus-circle"></i> Agregar material a la lista</button>
+
+      <div id="group-material-list" class="list-container"></div>
+
+      <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--border-color); flex-wrap: wrap;">
+        <button class="btn-secondary" onclick="window.location.href='2_cables.html'" style="flex: 0 1 auto; padding: 15px 25px;"><i class="fas fa-arrow-left"></i> Paso Anterior</button>
+        <button class="btn-add" onclick="window.location.href='4_herramientas.html'" style="margin-top: 0; flex: 1; font-size: 1.15rem;">SIGUIENTE PASO <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </section>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>
