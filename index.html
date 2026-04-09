@@ -2,26 +2,141 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Redirigiendo al Portal...</title>
-    <meta http-equiv="refresh" content="0; url=pages/1_datos.html">
-    <style>
-        body {
-            background-color: #0f2b3d; /* Azul oscuro corporativo de Fiberplus */
-            color: #009688; /* Teal / Turquesa */
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Operativo | Fiberplus</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/inicio.css">
 </head>
 <body>
-    <h2>Cargando Portal Operativo Fiberplus...</h2>
+
+    <div class="dashboard-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo-fiberplus.png" alt="Fiberplus" onerror="this.style.display='none';">
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                
+                <li class="nav-title">SERVICIOS OPERATIVOS</li>
+                <li><a href="pages/1_datos.html"><i class="fas fa-book"></i> Libro Diario</a></li>
+                <li><a href="#"><i class="fas fa-truck"></i> Registro Vehículos</a></li>
+                <li><a href="#"><i class="fas fa-user-clock"></i> Asistencia</a></li>
+                <li><a href="#"><i class="fas fa-wallet"></i> Caja Chica</a></li>
+                <li><a href="#"><i class="fas fa-project-diagram"></i> Proyectos</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar">
+                <div class="page-title">
+                    <h2>Panel de Control</h2>
+                    <p>Bienvenido al sistema de gestión operativa</p>
+                </div>
+                <div class="user-profile">
+                    <span id="badgeRol" class="role-badge"><i class="fas fa-spinner fa-spin"></i> Cargando...</span>
+                    <button class="btn-logout" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                
+                <div id="panelAdmin" class="admin-panel" style="display: none;">
+                    <button class="btn-download"><i class="fas fa-file-excel"></i> Descargar Base de Datos Completa</button>
+                </div>
+
+                <div class="action-grid">
+                    
+                    <div class="action-card primary-card" onclick="window.location.href='pages/1_datos.html'">
+                        <div class="card-icon"><i class="fas fa-file-signature"></i></div>
+                        <h3>Libro Diario</h3>
+                        <p>Registro de instalaciones, materiales y fotografías.</p>
+                        <span class="card-arrow"><i class="fas fa-arrow-right"></i></span>
+                    </div>
+
+                    <div class="action-card video-card" onclick="abrirVideo()">
+                        <div class="card-icon"><i class="fas fa-play-circle"></i></div>
+                        <h3>Video Tutorial</h3>
+                        <p>Aprende a usar el portal paso a paso.</p>
+                        <span class="card-arrow"><i class="fas fa-arrow-right"></i></span>
+                    </div>
+
+                    <div class="action-card stat-card">
+                        <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3>Estadísticas Mensuales</h3>
+                        <p>Gráficos de rendimiento (Próximamente).</p>
+                    </div>
+
+                    <div class="action-card stat-card">
+                        <div class="card-icon"><i class="fas fa-history"></i></div>
+                        <h3>Historial de Registros</h3>
+                        <p>Revisa los últimos envíos (Próximamente).</p>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="videoModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-video" onclick="cerrarVideo()"><i class="fas fa-times"></i></button>
+            <video id="tutorialVideo" controls>
+                <source src="assets/tutorial_app.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+    </div>
+
     <script>
-        // Respaldo en JavaScript por si falla el meta refresh
-        window.location.href = "pages/1_datos.html";
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Leer el rol desde la memoria del navegador
+            const rol = localStorage.getItem("fiberplus_rol");
+            
+            // 2. Seguridad: Si no hay rol, redireccionar al login de la web principal
+            if (!rol) {
+                window.location.href = "https://marlonn0.github.io/fiberplus-web/"; 
+                return;
+            }
+
+            // 3. Mostrar el distintivo y validar permisos de Administrador
+            const badge = document.getElementById("badgeRol");
+            if (rol === "administrador") {
+                badge.innerHTML = '<i class="fas fa-star"></i> Administrador';
+                badge.style.background = "#0ea5e9";
+                
+                // Mostrar herramientas exclusivas de administrador
+                document.getElementById("panelAdmin").style.display = "flex";
+            } else {
+                badge.innerHTML = '<i class="fas fa-hard-hat"></i> Operaciones';
+                badge.style.background = "#64748b";
+            }
+        });
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            if(confirm("¿Estás seguro que deseas cerrar sesión?")) {
+                localStorage.removeItem("fiberplus_rol");
+                window.location.href = "https://marlonn0.github.io/fiberplus-web/";
+            }
+        }
+
+        // Funciones del Modal de Video
+        const modal = document.getElementById("videoModal");
+        const video = document.getElementById("tutorialVideo");
+
+        function abrirVideo() { 
+            modal.style.display = "flex"; 
+        }
+        function cerrarVideo() { 
+            modal.style.display = "none"; 
+            video.pause(); 
+        }
     </script>
 </body>
 </html>

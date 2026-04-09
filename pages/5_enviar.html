@@ -10,11 +10,14 @@
 </head>
 <body>
   <div class="app">
+    
     <header class="topbar">
       <div class="hero-header">
-        <div class="hero-logo-card"><img src="../assets/img/logo-fiberplus.png" alt="FiberPlus" class="hero-logo" onerror="this.style.display='none'; alert('Error en la imagen');"></div>
+        <div class="hero-logo-card">
+          <img src="../assets/img/logo-fiberplus.png" alt="FiberPlus" class="hero-logo" onerror="this.style.display='none'; alert('Error en la imagen');">
+        </div>
         <div class="hero-title-block">
-          <span class="hero-label">FiberPlus</span>
+          <span class="hero-label">FiberPlus V2</span>
           <h1 class="hero-title">Libro Diario de Instalaciones</h1>
           <p class="hero-description">Registro técnico y operativo de actividades en campo.</p>
         </div>
@@ -33,7 +36,10 @@
 
     <section id="enviar-formulario" class="card glass-card">
       <div class="section-header" style="border-bottom: none; margin-bottom: 10px;">
-        <div class="header-left"><div class="header-icon"><i class="fas fa-paper-plane"></i></div><div><h2>Procesar y Enviar</h2><p class="subtle">Revisa el resumen antes de subirlo a la nube.</p></div></div>
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-paper-plane"></i></div>
+          <div><h2>Procesar y Enviar</h2><p class="subtle">Revisa el resumen antes de subirlo a la base de datos.</p></div>
+        </div>
       </div>
 
       <div style="background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--border-color);">
@@ -44,13 +50,15 @@
       </div>
 
       <div class="action-buttons" style="display: flex; flex-direction: column; gap: 15px; margin: 0;">
-        <button class="btn-add" type="button" onclick="enviarGoogleSheets()" style="font-size: 1.2rem; padding: 20px;">
+        <button id="btnEnviarFinal" class="btn-add" type="button" onclick="enviarGoogleSheets()" style="font-size: 1.2rem; padding: 20px;">
           <i class="fas fa-cloud-upload-alt"></i> ENVIAR DATOS A GOOGLE SHEETS
         </button>
       </div>
 
       <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--border-color); flex-wrap: wrap;">
-        <button class="btn-secondary" onclick="window.location.href='4_herramientas.html'" style="flex: 0 1 auto; padding: 15px 25px;"><i class="fas fa-arrow-left"></i> Volver a Herramientas</button>
+        <button class="btn-secondary" onclick="window.location.href='4_herramientas.html'" style="flex: 0 1 auto; padding: 15px 25px;">
+          <i class="fas fa-arrow-left"></i> Volver a Herramientas
+        </button>
       </div>
     </section>
   </div>
@@ -58,27 +66,32 @@
   <script src="../js/app.js"></script>
   
   <script>
+    // 1. Actualizar los numeritos del resumen al cargar la página
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('resumenCables').innerText = state.cables.length;
       document.getElementById('resumenMateriales').innerText = state.materials.length;
       document.getElementById('resumenHerramientas').innerText = state.tools.length;
     });
 
+    // 2. FUNCIÓN PRINCIPAL DE ENVÍO
     function enviarGoogleSheets() {
-      const f = (localStorage.getItem('fp_input_fecha') || '').trim();
-      const c = (localStorage.getItem('fp_input_ciudad') || '').trim();
-      const s = (localStorage.getItem('fp_input_supervisor') || '').trim();
-      const l = (localStorage.getItem('fp_input_lider') || '').trim();
-      const cl = (localStorage.getItem('fp_input_cliente') || '').trim();
-      const t = (localStorage.getItem('fp_input_tarea') || '').trim();
+      // --- EXTRAER Y LIMPIAR DATOS DE LA MEMORIA ---
+      const fecha = (localStorage.getItem('fp_input_fecha') || '').trim();
+      const ciudad = (localStorage.getItem('fp_input_ciudad') || '').trim();
+      const supervisor = (localStorage.getItem('fp_input_supervisor') || '').trim();
+      const lider = (localStorage.getItem('fp_input_lider') || '').trim();
+      let cliente = (localStorage.getItem('fp_input_cliente') || '').trim();
+      const tarea = (localStorage.getItem('fp_input_tarea') || '').trim();
+      const observaciones = (localStorage.getItem('fp_input_observacionesGenerales') || '').trim();
 
+      // --- VALIDACIÓN ESTRICTA (CANDADO) ---
       let faltan = [];
-      if (f === '') faltan.push("Fecha");
-      if (c === '') faltan.push("Ciudad");
-      if (s === '') faltan.push("Supervisor");
-      if (l === '') faltan.push("Líder");
-      if (cl === '') faltan.push("Cliente");
-      if (t === '') faltan.push("Tarea/ID");
+      if (fecha === '') faltan.push("Fecha");
+      if (ciudad === '') faltan.push("Ciudad");
+      if (supervisor === '') faltan.push("Supervisor");
+      if (lider === '') faltan.push("Líder");
+      if (cliente === '') faltan.push("Cliente");
+      if (tarea === '') faltan.push("Tarea/ID");
 
       if (faltan.length > 0) {
         showToast("Error: Faltan datos en el Paso 1 (" + faltan.join(", ") + ")", "error");
@@ -86,16 +99,71 @@
         return; 
       }
 
-      if (cl === "OTROS") {
-        const oCl = (localStorage.getItem('fp_input_otroCliente') || '').trim();
-        if (oCl === '') {
+      // Validar si eligió "OTROS" en Cliente
+      if (cliente === "OTROS") {
+        const otroCliente = (localStorage.getItem('fp_input_otroCliente') || '').trim();
+        if (otroCliente === '') {
           showToast("Error: Elegiste 'OTROS' en Cliente, pero no escribiste cuál.", "error");
           setTimeout(() => { window.location.href = "1_datos.html"; }, 2500);
           return; 
         }
+        cliente = otroCliente; // Reemplazamos "OTROS" por el nombre real que escribió
       }
 
-      alert("✅ ¡Validación superada! Todos los datos están perfectos. Listo para Google Sheets.");
+      // --- CAMBIAR ESTADO DEL BOTÓN (CARGANDO) ---
+      const btn = document.getElementById('btnEnviarFinal');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO DATOS... ESPERE...';
+      btn.style.opacity = '0.8';
+      btn.style.pointerEvents = 'none'; // Evita doble clic
+
+      // --- EMPAQUETADO DE DATOS (Payload) ---
+      const payload = {
+        datosGenerales: {
+          fecha: fecha,
+          ciudad: ciudad,
+          supervisor: supervisor,
+          liderCuadrilla: lider,
+          cliente: cliente,
+          tarea: tarea,
+          observacionesGenerales: observaciones
+        },
+        cables: state.cables,
+        materiales: state.materials,
+        herramientas: state.tools
+      };
+
+      // ✅ TU NUEVA URL REAL DE GOOGLE APPS SCRIPT ✅
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzieuxiQ8YMndLvf9j9RHcxoeZ1y_yQPekmgG_BRnbMtwI6vmSPOj1abvghNkay-CM2ew/exec";
+
+      // --- ENVÍO A LA NUBE ---
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors', // Evita bloqueos de seguridad del navegador
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        // ÉXITO
+        showToast("✅ ¡Datos enviados correctamente a Google Sheets!", "success");
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> ENVÍO EXITOSO';
+        btn.style.background = "#16a34a"; // Se pone verde para confirmar
+        
+        // Limpiar memoria y volver al inicio después de 3 segundos
+        setTimeout(() => {
+          localStorage.clear();
+          window.location.href = "1_datos.html";
+        }, 3000);
+      })
+      .catch(error => {
+        // ERROR
+        console.error('Error al enviar:', error);
+        showToast("❌ Error de conexión. Revisa tu internet e intenta de nuevo.", "error");
+        btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> REINTENTAR ENVÍO';
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto'; // Vuelve a permitir clics
+      });
     }
   </script>
 </body>

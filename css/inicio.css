@@ -1,0 +1,333 @@
+/* ========================================================
+   VARIABLES GLOBALES
+======================================================== */
+:root {
+    --sidebar-bg: #0f172a;
+    --sidebar-hover: #1e293b;
+    --primary: #0ea5e9;
+    --bg-color: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --danger: #ef4444;
+    --success: #10b981;
+}
+
+/* ========================================================
+   RESETEO BÁSICO
+======================================================== */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Titillium Web', sans-serif; 
+}
+
+body { 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+}
+
+.dashboard-container { 
+    display: flex; 
+    min-height: 100vh; 
+}
+
+/* ========================================================
+   BARRA LATERAL (SIDEBAR)
+======================================================== */
+.sidebar { 
+    width: 260px; 
+    background-color: var(--sidebar-bg); 
+    color: white; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 20;
+}
+
+.sidebar-header { 
+    padding: 25px 20px; 
+    text-align: center; 
+    border-bottom: 1px solid rgba(255,255,255,0.05); 
+}
+
+.sidebar-header img { 
+    width: 150px; 
+}
+
+.nav-links { 
+    list-style: none; 
+    padding: 20px 0; 
+}
+
+.nav-title { 
+    font-size: 0.75rem; 
+    color: #64748b; 
+    padding: 15px 25px 10px; 
+    font-weight: 700; 
+    letter-spacing: 1.5px; 
+}
+
+.nav-links li a { 
+    display: flex;
+    align-items: center;
+    padding: 12px 25px; 
+    color: #cbd5e1; 
+    text-decoration: none; 
+    font-size: 1.05rem; 
+    transition: all 0.3s ease; 
+}
+
+.nav-links li a i { 
+    width: 30px; 
+    font-size: 1.1rem;
+}
+
+.nav-links li a:hover { 
+    background-color: var(--sidebar-hover); 
+    color: white; 
+    padding-left: 30px; /* Pequeño efecto de movimiento */
+}
+
+.nav-links li a.active { 
+    background-color: var(--primary); 
+    color: white; 
+    border-left: 4px solid #fff; 
+}
+
+/* ========================================================
+   CONTENIDO PRINCIPAL
+======================================================== */
+.main-content { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+/* Barra Superior */
+.top-bar { 
+    background: var(--card-bg); 
+    padding: 20px 40px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+    z-index: 10; 
+}
+
+.page-title h2 { 
+    font-size: 1.8rem; 
+    color: var(--sidebar-bg); 
+    margin-bottom: 5px;
+}
+
+.page-title p { 
+    color: var(--text-muted); 
+    font-size: 1rem; 
+}
+
+.user-profile { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+
+.role-badge { 
+    padding: 6px 15px; 
+    border-radius: 20px; 
+    color: white; 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-logout { 
+    background: none; 
+    border: 1px solid #cbd5e1; 
+    padding: 8px 15px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    color: var(--text-main); 
+    font-weight: 600; 
+    transition: all 0.2s; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-logout:hover { 
+    background: #fee2e2; 
+    color: var(--danger); 
+    border-color: var(--danger); 
+}
+
+/* Área de Trabajo */
+.content-area { 
+    padding: 40px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    width: 100%; 
+}
+
+/* ========================================================
+   PANEL DE ADMINISTRADOR
+======================================================== */
+.admin-panel { 
+    display: flex; 
+    justify-content: flex-end; 
+    margin-bottom: 30px; 
+}
+
+.btn-download { 
+    background: var(--success); 
+    color: white; 
+    border: none; 
+    padding: 12px 24px; 
+    border-radius: 8px; 
+    font-size: 1rem; 
+    font-weight: 700; 
+    cursor: pointer; 
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); 
+    transition: all 0.3s; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-download:hover { 
+    background: #059669; 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* ========================================================
+   GRILLA DE BOTONES (TARJETAS DE INICIO)
+======================================================== */
+.action-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 25px; 
+}
+
+.action-card { 
+    background: var(--card-bg); 
+    padding: 35px 25px; 
+    border-radius: 12px; 
+    text-align: center; 
+    cursor: pointer; 
+    border: 1px solid #e2e8f0; 
+    transition: all 0.3s ease; 
+    position: relative; 
+    overflow: hidden; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
+}
+
+.action-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08); 
+    border-color: var(--primary); 
+}
+
+.card-icon { 
+    font-size: 3rem; 
+    color: var(--primary); 
+    margin-bottom: 20px; 
+    transition: transform 0.3s;
+}
+
+.action-card:hover .card-icon {
+    transform: scale(1.1);
+}
+
+.action-card h3 { 
+    font-size: 1.4rem; 
+    margin-bottom: 12px; 
+    color: var(--sidebar-bg); 
+}
+
+.action-card p { 
+    color: var(--text-muted); 
+    font-size: 1rem; 
+    line-height: 1.5;
+}
+
+.card-arrow { 
+    position: absolute; 
+    bottom: 20px; 
+    right: 20px; 
+    font-size: 1.2rem; 
+    color: var(--primary); 
+    opacity: 0; 
+    transition: all 0.3s; 
+}
+
+.action-card:hover .card-arrow { 
+    opacity: 1; 
+    right: 25px; 
+}
+
+/* Tarjetas Específicas */
+.video-card .card-icon { color: #8b5cf6; }
+.video-card:hover { border-color: #8b5cf6; }
+.video-card:hover .card-arrow { color: #8b5cf6; }
+
+.stat-card { cursor: default; }
+.stat-card:hover { 
+    transform: none; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
+    border-color: #e2e8f0; 
+}
+.stat-card .card-icon { color: #cbd5e1; }
+.stat-card:hover .card-icon { transform: none; }
+
+/* ========================================================
+   MODAL DE VIDEO
+======================================================== */
+.modal-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(15, 23, 42, 0.9); 
+    backdrop-filter: blur(5px);
+    z-index: 1000; 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.modal-content { 
+    background: #000; 
+    padding: 5px; 
+    border-radius: 8px; 
+    max-width: 900px; 
+    width: 90%; 
+    position: relative; 
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content video { 
+    width: 100%; 
+    border-radius: 4px; 
+    display: block;
+}
+
+.close-video { 
+    position: absolute; 
+    top: -45px; 
+    right: 0; 
+    background: none; 
+    border: none; 
+    color: white; 
+    font-size: 2.5rem; 
+    cursor: pointer; 
+    transition: color 0.2s;
+}
+
+.close-video:hover {
+    color: var(--danger);
+}
