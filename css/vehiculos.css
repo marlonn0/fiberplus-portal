@@ -1,0 +1,41 @@
+/* ========================================================
+   ESTILOS DE VEHÍCULOS (vehiculos.css)
+======================================================== */
+.admin-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.section-heading { font-size: 1.4rem; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px;}
+
+.btn-download { background: var(--success); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: all 0.3s; display: flex; align-items: center; gap: 10px; }
+.btn-download:hover { background: #059669; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); }
+
+/* Indicadores Superiores (KPIs) */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
+.kpi-card { background: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center; transition: transform 0.3s;}
+.kpi-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+.kpi-info h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;}
+.kpi-info h2 { font-size: 2rem; color: var(--text-main); }
+.kpi-info span { font-size: 0.85rem; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 5px; margin-top: 5px;}
+.kpi-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+/* Colores de iconos KPI */
+.kpi-icon.blue { background: #e0f2fe; color: #0284c7; }
+.kpi-icon.orange { background: #ffedd5; color: #ea580c; }
+.kpi-icon.red { background: #fee2e2; color: #ef4444; }
+
+/* Botones de Acción Rápida */
+.action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+.action-card { background: var(--card-bg); padding: 30px; border-radius: 16px; display: flex; align-items: center; gap: 20px; cursor: pointer; border: 1px solid #e2e8f0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.02); position: relative; overflow: hidden;}
+.action-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: transparent; transition: 0.3s;}
+
+.action-card:hover { transform: translateX(5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); border-color: transparent; }
+.action-card:hover::before { background: var(--primary); }
+
+.card-icon { width: 65px; height: 65px; border-radius: 12px; background: #f1f5f9; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: 0.3s; flex-shrink: 0;}
+.action-card:hover .card-icon { background: var(--primary); color: white; transform: rotate(5deg); }
+
+.card-content h3 { font-size: 1.3rem; margin-bottom: 5px; color: var(--text-main); }
+.card-content p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.4; }
+
+/* Tarjetas específicas */
+.video-card:hover::before { background: #8b5cf6; }
+.video-card:hover .card-icon { background: #8b5cf6; }
+.video-card .card-icon { color: #8b5cf6; }

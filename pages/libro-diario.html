@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro Diario | Fiberplus Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/libro-diario.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus" onerror="this.style.display='none';">
+            </div>
+            <ul class="nav-links">
+                <li><a href="inicio.html"><i class="fas fa-home"></i> Inicio</a></li>
+                <li class="nav-title">SERVICIOS OPERATIVOS</li>
+                <li><a href="libro-diario.html" class="active"><i class="fas fa-chart-line"></i> Libro Diario</a></li>
+                <li><a href="vehiculos.html"><i class="fas fa-truck"></i> Registro Vehículos</a></li>
+                <li><a href="#"><i class="fas fa-user-clock"></i> Asistencia</a></li>
+                <li><a href="#"><i class="fas fa-wallet"></i> Caja Chica</a></li>
+                <li><a href="#"><i class="fas fa-project-diagram"></i> Proyectos</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h2>Métricas Operativas</h2>
+                    <p>Análisis detallado de rendimiento e ingresos</p>
+                </div>
+                <div class="user-profile">
+                    <span id="badgeRol" class="role-badge"><i class="fas fa-spinner fa-spin"></i> Cargando...</span>
+                    <button class="btn-logout" onclick="cerrarSesion()"><i class="fas fa-power-off"></i> Cerrar Sesión</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <h4>Instalaciones del Mes</h4>
+                            <h2>142</h2>
+                            <span><i class="fas fa-arrow-up"></i> 12% vs mes anterior</span>
+                        </div>
+                        <div class="kpi-icon blue"><i class="fas fa-tools"></i></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <h4>Proyectos Activos</h4>
+                            <h2>8</h2>
+                            <span style="color: var(--text-muted)"><i class="fas fa-minus"></i> Se mantiene estable</span>
+                        </div>
+                        <div class="kpi-icon purple"><i class="fas fa-project-diagram"></i></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <h4>Materiales Utilizados</h4>
+                            <h2>1,240 <small>m</small></h2>
+                            <span><i class="fas fa-arrow-up"></i> 5% de fibra óptica</span>
+                        </div>
+                        <div class="kpi-icon orange"><i class="fas fa-box-open"></i></div>
+                    </div>
+                </div>
+
+                <div id="panelAdmin" class="admin-panel" style="display: none;">
+                    <h3 class="section-heading"><i class="fas fa-database"></i> Panel de Administración</h3>
+                    <button class="btn-download"><i class="fas fa-file-excel"></i> Exportar Datos (Excel)</button>
+                </div>
+
+                <div class="dashboard-layout">
+                    
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <h3>Rendimiento por Área de Servicio</h3>
+                            <div class="chart-actions">
+                                <button><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button><i class="fas fa-file-csv"></i> CSV</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="miGrafico"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="action-grid">
+                        <div class="action-card" onclick="window.location.href='1_datos.html'">
+                            <div class="card-icon"><i class="fas fa-file-signature"></i></div>
+                            <div class="card-content">
+                                <h3>Nuevo Registro</h3>
+                                <p>Iniciar un nuevo reporte de instalación y control de materiales en campo.</p>
+                            </div>
+                        </div>
+
+                        <div class="action-card video-card" onclick="abrirVideo()">
+                            <div class="card-icon"><i class="fas fa-play-circle"></i></div>
+                            <div class="card-content">
+                                <h3>Tutorial de Uso</h3>
+                                <p>Aprende cómo llenar correctamente los formularios y subir fotografías.</p>
+                            </div>
+                        </div>
+
+                        <div class="action-card" style="cursor: not-allowed; opacity: 0.7;">
+                            <div class="card-icon" style="background: #e2e8f0; color: #94a3b8;"><i class="fas fa-history"></i></div>
+                            <div class="card-content">
+                                <h3>Historial</h3>
+                                <p>Revisa reportes anteriores (Módulo en desarrollo).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="videoModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-video" onclick="cerrarVideo()"><i class="fas fa-times"></i></button>
+            <video id="tutorialVideo" controls>
+                <source src="../assets/tutorial_app.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Roles
+            const rol = localStorage.getItem("fiberplus_rol");
+            if (!rol) { window.location.href = "https://marlonn0.github.io/fiberplus-web/"; return; }
+
+            const badge = document.getElementById("badgeRol");
+            if (rol === "administrador") {
+                badge.innerHTML = '<i class="fas fa-user-tie"></i> Administrador';
+                badge.style.background = "linear-gradient(135deg, #0ea5e9, #0284c7)";
+                document.getElementById("panelAdmin").style.display = "flex";
+            } else {
+                badge.innerHTML = '<i class="fas fa-hard-hat"></i> Operaciones';
+                badge.style.background = "linear-gradient(135deg, #64748b, #475569)";
+            }
+
+            // 2. Inicializar Gráfico con Chart.js
+            const ctx = document.getElementById('miGrafico').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Fibra Óptica', 'Obra Civil', 'Mantenimiento', 'Soporte', 'Consultoría'],
+                    datasets: [{
+                        label: 'Proyectos Completados',
+                        data: [45, 25, 30, 15, 10],
+                        backgroundColor: [
+                            'rgba(2, 132, 199, 0.8)', // Azul
+                            'rgba(16, 185, 129, 0.8)', // Verde
+                            'rgba(147, 51, 234, 0.8)', // Morado
+                            'rgba(245, 158, 11, 0.8)', // Naranja
+                            'rgba(99, 102, 241, 0.8)'  // Indigo
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+
+        // 3. Funciones Generales
+        function cerrarSesion() {
+            if(confirm("¿Estás seguro que deseas cerrar la sesión operativa?")) {
+                localStorage.removeItem("fiberplus_rol");
+                window.location.href = "https://marlonn0.github.io/fiberplus-web/";
+            }
+        }
+
+        const modal = document.getElementById("videoModal");
+        const video = document.getElementById("tutorialVideo");
+        function abrirVideo() { modal.classList.add("show"); }
+        function cerrarVideo() { modal.classList.remove("show"); video.pause(); }
+    </script>
+</body>
+</html>

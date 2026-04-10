@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Fiberplus Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/inicio.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus" onerror="this.style.display='none';">
+            </div>
+            <ul class="nav-links">
+                <li><a href="inicio.html" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                <li class="nav-title">SERVICIOS OPERATIVOS</li>
+                <li><a href="libro-diario.html"><i class="fas fa-book"></i> Libro Diario</a></li>
+                <li><a href="vehiculos.html"><i class="fas fa-truck"></i> Registro Vehículos</a></li>
+                <li><a href="#"><i class="fas fa-user-clock"></i> Asistencia</a></li>
+                <li><a href="#"><i class="fas fa-wallet"></i> Caja Chica</a></li>
+                <li><a href="#"><i class="fas fa-project-diagram"></i> Proyectos</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h2>Bienvenido a Fiberplus</h2>
+                    <p>Portal Operativo y de Gestión</p>
+                </div>
+                <div class="user-profile">
+                    <span id="badgeRol" class="role-badge"><i class="fas fa-spinner fa-spin"></i> Cargando...</span>
+                    <button class="btn-logout" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="welcome-banner">
+                    <div class="welcome-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="welcome-text">
+                        <h3>Sistema Central de Operaciones</h3>
+                        <p>Has ingresado al portal corporativo de Fiberplus. Desde aquí podrás gestionar las actividades diarias, reportar avances de campo y monitorear el flujo de materiales. La información registrada está cifrada y sincronizada con nuestra base de datos principal.</p>
+                    </div>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-box info">
+                        <div class="stat-box-icon"><i class="fas fa-satellite-dish"></i></div>
+                        <div class="stat-box-info">
+                            <h4>Estado de Red</h4>
+                            <h2>Operativo</h2>
+                        </div>
+                    </div>
+                    <div class="stat-box success">
+                        <div class="stat-box-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-box-info">
+                            <h4>Sincronización</h4>
+                            <h2>En línea</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rol = localStorage.getItem("fiberplus_rol");
+            if (!rol) { window.location.href = "https://marlonn0.github.io/fiberplus-web/"; return; }
+            
+            const badge = document.getElementById("badgeRol");
+            if (rol === "administrador") {
+                badge.innerHTML = '<i class="fas fa-user-tie"></i> Administrador';
+                badge.style.background = "linear-gradient(135deg, #0ea5e9, #0284c7)";
+            } else {
+                badge.innerHTML = '<i class="fas fa-hard-hat"></i> Operaciones';
+                badge.style.background = "linear-gradient(135deg, #64748b, #475569)";
+            }
+        });
+
+        function cerrarSesion() {
+            if(confirm("¿Estás seguro que deseas cerrar la sesión operativa?")) {
+                localStorage.removeItem("fiberplus_rol");
+                window.location.href = "https://marlonn0.github.io/fiberplus-web/";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro Diario de Vehículo | Fiberplus</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <link rel="stylesheet" href="../css/form-vehiculo.css" />
+</head>
+<body>
+  
+  <main class="app">
+    
+    <a href="vehiculos.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+
+    <header class="main-header">
+        <div class="logo-box">
+            <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus">
+        </div>
+        <br>
+        <span class="badge-brand">FIBERPLUS</span>
+        <h1>Registro Diario de Vehículo</h1>
+        <p>Control de jornada, cuadrilla, odómetro, combustible y evidencia fotográfica.</p>
+    </header>
+
+    <nav class="nav-tabs">
+        <button onclick="scrollToSection('datos-generales')"><i class="fas fa-id-card"></i> Datos</button>
+        <button onclick="scrollToSection('tipo-cuadrilla')"><i class="fas fa-users"></i> Cuadrilla</button>
+        <button onclick="scrollToSection('jornada')"><i class="fas fa-road"></i> Jornada</button>
+        <button onclick="scrollToSection('evidencias')"><i class="fas fa-camera"></i> Evidencias</button>
+        <button onclick="scrollToSection('resumen')"><i class="fas fa-paper-plane"></i> Enviar</button>
+    </nav>
+
+    <section id="datos-generales" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div>
+            <h2>Datos del Día</h2>
+            <p>Complete la información general de la jornada</p>
+          </div>
+        </div>
+        <span class="badge-status">OBLIGATORIO</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="fecha"><i class="fas fa-calendar"></i> Fecha *</label>
+          <input id="fecha" type="date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="cedula"><i class="fas fa-id-card"></i> Cédula *</label>
+          <input id="cedula" type="text" class="form-input" maxlength="10" inputmode="numeric" placeholder="Ej: 1719315798" required>
+        </div>
+        <div class="form-group">
+          <label for="apellidos"><i class="fas fa-user"></i> Apellidos *</label>
+          <input id="apellidos" type="text" class="form-input" placeholder="Sus 2 apellidos" required>
+        </div>
+        <div class="form-group">
+          <label for="nombre"><i class="fas fa-signature"></i> Nombre *</label>
+          <input id="nombre" type="text" class="form-input" placeholder="Su nombre" required>
+        </div>
+        <div class="form-group full-width">
+          <label for="placa"><i class="fas fa-car"></i> Vehículo / Placa *</label>
+          <input id="placa" type="text" class="form-input" placeholder="Ej: ABC1234" required>
+        </div>
+      </div>
+    </section>
+
+    <section id="tipo-cuadrilla" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-hard-hat"></i></div>
+          <div>
+            <h2>Tipo de Cuadrilla</h2>
+            <p>Seleccione su rol y actividades</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="radio-grid">
+        <label class="choice-card"><input type="radio" name="tipoCuadrilla" value="Mantenimiento"><i class="fas fa-wrench"></i> Mantenimiento</label>
+        <label class="choice-card"><input type="radio" name="tipoCuadrilla" value="Instalaciones"><i class="fas fa-network-wired"></i> Instalaciones</label>
+      </div>
+
+      <div id="bloqueMantenimiento" class="conditional-block hidden">
+        <label style="margin-bottom: 15px;">Trabajo de Mantenimiento</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="trabajoMantenimiento" value="Preventivo"> Preventivo</label>
+          <label class="check-item"><input type="checkbox" name="trabajoMantenimiento" value="Emergente"> Emergente</label>
+          <label class="check-item"><input type="checkbox" name="trabajoMantenimiento" value="Trabajo Especial"> Trabajo Especial</label>
+        </div>
+      </div>
+
+      <div id="bloqueInstalaciones" class="conditional-block hidden">
+        <label style="margin-bottom: 15px;">Trabajo de Instalaciones</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Tendido cable FO"> Tendido cable FO</label>
+          <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Instalación NAP"> Instalación NAP</label>
+          <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Fusiones"> Fusiones</label>
+          <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Certificaciones"> Certificaciones</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="jornada" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-route"></i></div>
+          <div>
+            <h2>Evento de Jornada</h2>
+            <p>Seleccione el evento que está reportando en este momento</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="radio-grid">
+        <label class="choice-card"><input type="radio" name="tipoJornada" value="Inicio de Jornada"><i class="fas fa-play"></i> Inicio Jornada</label>
+        <label class="choice-card"><input type="radio" name="tipoJornada" value="Fin de Jornada"><i class="fas fa-stop"></i> Fin Jornada</label>
+        <label class="choice-card"><input type="radio" name="tipoJornada" value="Cargó combustible"><i class="fas fa-gas-pump"></i> Combustible</label>
+        <label class="choice-card"><input type="radio" name="tipoJornada" value="Fin de Evento"><i class="fas fa-flag-checkered"></i> Fin Evento</label>
+      </div>
+
+      <div id="bloqueInicio" class="conditional-block hidden">
+        <div class="form-grid">
+          <div class="form-group"><label>Odómetro Inicio (km)</label><input id="odoInicio" type="text" class="form-input numeric-only"></div>
+          <div class="form-group"><label>Foto Odómetro</label><input id="fotoInicio" type="file" accept="image/*" class="form-input"></div>
+        </div>
+      </div>
+
+      <div id="bloqueFinJornada" class="conditional-block hidden">
+        <div class="form-grid">
+          <div class="form-group"><label>Odómetro Fin (km)</label><input id="odoFinJornada" type="text" class="form-input numeric-only"></div>
+          <div class="form-group"><label>Foto Odómetro</label><input id="fotoFinJornada" type="file" accept="image/*" class="form-input"></div>
+        </div>
+      </div>
+
+      <div id="bloqueFinEvento" class="conditional-block hidden">
+        <div class="form-grid">
+          <div class="form-group"><label>Odómetro Evento (km)</label><input id="odoFinEvento" type="text" class="form-input numeric-only"></div>
+          <div class="form-group"><label>Foto Odómetro</label><input id="fotoFinEvento" type="file" accept="image/*" class="form-input"></div>
+        </div>
+      </div>
+
+      <div id="bloqueCombustible" class="conditional-block hidden">
+        <div class="form-grid">
+          <div class="form-group"><label>Odómetro Carga (km)</label><input id="odoCombustible" type="text" class="form-input numeric-only"></div>
+          <div class="form-group"><label>Galones</label><input id="galones" type="text" class="form-input decimal-input"></div>
+          <div class="form-group"><label>Costo Total (USD)</label><input id="costo" type="text" class="form-input decimal-input"></div>
+          <div class="form-group"><label>Foto Comprobante</label><input id="fotoComprobante" type="file" accept="image/*" class="form-input"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidencias" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-check-double"></i></div>
+          <div>
+            <h2>Validación Rápida</h2>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="check-item"><input type="checkbox" id="checkDatos"> Confirmo que los datos son correctos.</label>
+        <label class="check-item"><input type="checkbox" id="checkEvento"> Confirmo selección de evento.</label>
+        <label class="check-item"><input type="checkbox" id="checkFotos"> Confirmo evidencias adjuntas.</label>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="generateSummary()"><i class="fas fa-cogs"></i> Generar Resumen</button>
+      </div>
+    </section>
+
+    <section id="resumen" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-paper-plane"></i></div>
+          <div>
+            <h2>Envío de Información</h2>
+          </div>
+        </div>
+      </div>
+
+      <textarea id="summaryOutput" class="summary-output" readonly placeholder="Genere el resumen para visualizar los datos a enviar..."></textarea>
+      
+      <div class="action-buttons">
+        <button class="btn-primary" type="button" onclick="alert('Funcionalidad de envío en construcción')" style="width: 100%;">
+          <i class="fas fa-paper-plane"></i> Enviar Formulario
+        </button>
+      </div>
+    </section>
+
+  </main>
+  
+  <script src="../js/form-vehiculo.js"></script>
+</body>
+</html>
