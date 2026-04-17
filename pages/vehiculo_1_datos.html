@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datos del Vehículo | Fiberplus</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/form-vehiculo.css" />
+</head>
+<body>
+  
+  <main class="app">
+    
+    <a href="vehiculos.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+
+    <header class="main-header">
+        <div class="logo-box">
+            <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus">
+        </div>
+        <br>
+        <span class="badge-brand">Paso 1 de 4</span>
+        <h1>Datos Generales</h1>
+        <p>Complete la información base del conductor responsable.</p>
+    </header>
+
+    <section id="datos-generales" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div>
+            <h2>Datos del Día</h2>
+            <p>Información general de la jornada</p>
+          </div>
+        </div>
+        <span class="badge-status">OBLIGATORIO</span>
+      </div>
+
+      <form id="formDatosVehiculo">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fecha"><i class="fas fa-calendar"></i> Fecha *</label>
+            <input id="fecha" type="date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="cedula"><i class="fas fa-id-card"></i> Cédula *</label>
+            <input id="cedula" type="text" class="form-input" maxlength="10" inputmode="numeric" placeholder="Ej: 1719315798" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos"><i class="fas fa-user"></i> Apellidos *</label>
+            <input id="apellidos" type="text" class="form-input" placeholder="Sus 2 apellidos" required>
+          </div>
+          <div class="form-group">
+            <label for="nombre"><i class="fas fa-signature"></i> Nombre *</label>
+            <input id="nombre" type="text" class="form-input" placeholder="Su nombre" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="placa"><i class="fas fa-car"></i> Vehículo / Placa *</label>
+            <input id="placa" type="text" class="form-input" placeholder="Ej: ABC1234" required>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="vehiculo_2_cuadrilla.html" class="btn-primary" style="text-decoration: none; display: inline-block;">
+            Siguiente: Cuadrilla <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </form>
+    </section>
+
+  </main>
+  
+  </body>
+</html>

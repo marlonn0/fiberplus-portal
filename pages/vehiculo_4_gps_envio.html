@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Envío y GPS | Fiberplus</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/form-vehiculo.css" />
+</head>
+<body>
+  
+  <main class="app">
+    
+    <a href="vehiculos.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+
+    <header class="main-header">
+        <div class="logo-box">
+            <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus">
+        </div>
+        <br>
+        <span class="badge-brand">Paso 4 de 4</span>
+        <h1>Verificación y Envío</h1>
+        <p>Capture su ubicación satelital y envíe el reporte.</p>
+    </header>
+
+    <section id="gps-section" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon" style="background: #eef2ff; color: #4f46e5;"><i class="fas fa-satellite"></i></div>
+          <div>
+            <h2>Ubicación Exacta</h2>
+            <p>Requerido para validar el reporte</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding: 20px 0;">
+        <button id="btnCapturarGps" class="btn-primary" type="button" style="background: #4f46e5; margin-bottom: 15px;">
+          <i class="fas fa-map-marker-alt"></i> Capturar GPS
+        </button>
+        
+        <div id="gpsResultados" style="display: none; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: left;">
+            <p><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>Latitud:</strong> <span id="lblLat">---</span></p>
+            <p><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>Longitud:</strong> <span id="lblLng">---</span></p>
+            <p><i class="fas fa-crosshairs" style="color: #f59e0b;"></i> <strong>Precisión:</strong> <span id="lblPrecision">---</span> metros</p>
+        </div>
+        <p id="gpsMensaje" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+           * El sistema solicitará permisos de ubicación.
+        </p>
+      </div>
+    </section>
+
+    <section id="resumen" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon" style="background: #dcfce7; color: #166534;"><i class="fas fa-paper-plane"></i></div>
+          <div>
+            <h2>Finalizar Registro</h2>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: var(--azul-suave); border: 1px solid rgba(26,74,111,.12); padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px;">
+        <i class="fas fa-lock" style="color: var(--azul-medio); margin-top: 3px;"></i>
+        <p style="font-size: 0.95rem; color: var(--azul-oscuro); margin: 0;">El envío requiere validación de GPS. Todos los datos y fotografías serán comprimidos antes de su envío al servidor de Fiberplus.</p>
+      </div>
+
+      <div class="action-buttons">
+        <a href="vehiculo_3_jornada.html" class="btn-primary" style="background: var(--text-muted); text-decoration: none; width: 40%; text-align: center;">
+          <i class="fas fa-arrow-left"></i> Atrás
+        </a>
+        <button id="btnEnviarFinal" class="btn-primary" style="background: #166534; width: 60%; cursor: pointer;">
+          <i class="fas fa-cloud-upload-alt"></i> ENVIAR REPORTE
+        </button>
+      </div>
+    </section>
+
+  </main>
+  
+  <script src="../js/form-vehiculo.js"></script>
+</body>
+</html>

@@ -1,186 +1,296 @@
 /* ========================================================
-   LÓGICA: FORMULARIO REGISTRO DE VEHÍCULO (form-vehiculo.js)
+   LÓGICA MAESTRA: FORMULARIO VEHÍCULOS (4 PÁGINAS)
 ======================================================== */
+
+// 1. CONFIGURACIÓN PRINCIPAL
+// Aquí pegaremos el link de Google Script en el siguiente paso
+const ENDPOINT_URL = ""; 
+const DRAFT_KEY = "fiberplus_vehiculo_draft_v1";
+
+// ==========================================
+// 2. UTILIDADES VISUALES Y HELPERS
+// ==========================================
 function getEl(id) { return document.getElementById(id); }
 
 function showToast(message, type = 'success') {
-  let toast = document.querySelector('.toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = message;
-  toast.className = `toast ${type} show`;
-  setTimeout(() => toast.classList.remove('show'), 2800);
+    let toast = document.querySelector('.toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-function scrollToSection(id) {
-  const section = getEl(id);
-  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// ==========================================
+// 3. MEMORIA TEMPORAL (GUARDAR ENTRE PÁGINAS)
+// ==========================================
+function getDraft() {
+    return JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
 }
 
-function fileName(id) {
-  const input = getEl(id);
-  return input && input.files && input.files[0] ? input.files[0].name : '';
+function saveToDraft(key, value) {
+    const draft = getDraft();
+    draft[key] = value;
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
 }
 
-function selectedRadio(name) {
-  const checked = document.querySelector(`input[name="${name}"]:checked`);
-  return checked ? checked.value : '';
+// Restaurar los datos si el usuario regresa de página
+function restoreState() {
+    const draft = getDraft();
+    
+    // Restaurar Inputs de Texto y Fechas
+    const inputs = ['fecha', 'cedula', 'apellidos', 'nombre', 'placa', 'odoInicio', 'odoFinJornada', 'odoFinEvento', 'odoCombustible', 'galones', 'costo'];
+    inputs.forEach(id => {
+        if (getEl(id) && draft[id]) getEl(id).value = draft[id];
+    });
+
+    // Restaurar Radios (Cuadrilla y Jornada)
+    if (draft.tipoCuadrilla) {
+        let radio = document.querySelector(`input[name="tipoCuadrilla"][value="${draft.tipoCuadrilla}"]`);
+        if (radio) {
+            radio.checked = true;
+            if (typeof mostrarOpciones === 'function') mostrarOpciones(); // Muestra las cajas ocultas
+        }
+    }
+    
+    if (draft.tipoJornada) {
+        let radio = document.querySelector(`input[name="tipoJornada"][value="${draft.tipoJornada}"]`);
+        if (radio) {
+            radio.checked = true;
+            if (typeof mostrarEvento === 'function') mostrarEvento(); // Muestra las cajas ocultas
+        }
+    }
+
+    // Restaurar Checkboxes (Trabajos)
+    const checks = ['trabajoMantenimiento', 'trabajoInstalacion'];
+    checks.forEach(name => {
+        if (draft[name]) {
+            document.querySelectorAll(`input[name="${name}"]`).forEach(cb => {
+                if (draft[name].includes(cb.value)) cb.checked = true;
+            });
+        }
+    });
 }
 
-function selectedChecks(name) {
-  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+// Configurar que todo lo que se escriba, se guarde al instante
+function setupAutoSave() {
+    document.querySelectorAll('input:not([type="file"])').forEach(input => {
+        input.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox') {
+                // Lógica especial para guardar múltiples checkboxes
+                let checkedValues = Array.from(document.querySelectorAll(`input[name="${e.target.name}"]:checked`)).map(el => el.value);
+                saveToDraft(e.target.name, checkedValues);
+            } else {
+                saveToDraft(e.target.id || e.target.name, e.target.value);
+            }
+        });
+    });
 }
 
-function onlyDigits(value) { return String(value || '').replace(/\D+/g, ''); }
-
-function clearChecks(name) {
-  document.querySelectorAll(`input[name="${name}"]`).forEach(el => el.checked = false);
+// ==========================================
+// 4. COMPRESIÓN DE IMÁGENES (PÁGINA 3)
+// ==========================================
+// Esta función toma la foto del celular, le baja el peso y la convierte a texto (Base64)
+async function compressImageAndSave(file, keyName) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = event => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 1200; // Resolución profesional pero ligera
+            const scaleSize = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            // Comprime al 70% de calidad JPEG
+            const base64Data = canvas.toDataURL('image/jpeg', 0.7);
+            
+            // Extraer solo el código puro de Base64
+            const pureBase64 = base64Data.split(',')[1];
+            
+            // Guardar en la memoria temporal
+            saveToDraft(keyName + "_base64", pureBase64);
+            saveToDraft(keyName + "_name", file.name);
+            showToast('Imagen adjuntada y comprimida con éxito', 'success');
+        }
+    };
 }
 
-function hideAllEventBlocks() {
-  ['bloqueInicio', 'bloqueFinJornada', 'bloqueFinEvento', 'bloqueCombustible'].forEach(id => getEl(id).classList.add('hidden'));
+// Escuchar cuando el usuario sube una foto
+function setupImageCompression() {
+    const fileInputs = ['fotoInicio', 'fotoFinJornada', 'fotoFinEvento', 'fotoOdoCombustible', 'fotoComprobante'];
+    fileInputs.forEach(id => {
+        const el = getEl(id);
+        if (el) {
+            el.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    showToast('Procesando imagen...', 'warning');
+                    compressImageAndSave(file, id);
+                }
+            });
+        }
+    });
 }
 
-function hideAllCrewBlocks() {
-  ['bloqueMantenimiento', 'bloqueInstalaciones'].forEach(id => getEl(id).classList.add('hidden'));
+// ==========================================
+// 5. ENVÍO FINAL AL SERVIDOR (PÁGINA 4)
+// ==========================================
+async function enviarAlServidor() {
+    const btnEnviar = getEl('btnEnviarFinal');
+    const draft = getDraft();
+
+    // 1. Validaciones finales antes de enviar
+    if (!draft.gpsLatitud || !draft.gpsLongitud) {
+        showToast('Error: Debes capturar el GPS antes de enviar', 'error');
+        return;
+    }
+    if (!ENDPOINT_URL) {
+        showToast('Error: Falta configurar el servidor (URL vacía)', 'error');
+        return;
+    }
+
+    // 2. Cambiar estado del botón
+    btnEnviar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO DATOS...';
+    btnEnviar.style.opacity = '0.7';
+    btnEnviar.disabled = true;
+
+    // 3. Preparar el "Paquete" (Payload) con el formato exacto del ZIP
+    const payload = {
+        fecha: draft.fecha || '',
+        cedula: draft.cedula || '',
+        apellidos: draft.apellidos || '',
+        nombre: draft.nombre || '',
+        placa: draft.placa || '',
+        tipoCuadrilla: draft.tipoCuadrilla || '',
+        trabajos: draft.trabajoMantenimiento || draft.trabajoInstalacion || [],
+        tipoJornada: draft.tipoJornada || '',
+        
+        odometroInicio: draft.odoInicio || '',
+        odometroFinJornada: draft.odoFinJornada || '',
+        odometroFinEvento: draft.odoFinEvento || '',
+        odometroCombustible: draft.odoCombustible || '',
+        galones: draft.galones || '',
+        costoTotalUsd: draft.costo || '',
+        
+        checkDatos: true, // Asumimos true porque está en la última página
+        checkEvento: true,
+        checkFotos: true,
+        
+        gps: {
+            latitude: draft.gpsLatitud,
+            longitude: draft.gpsLongitud,
+            accuracyMeters: draft.gpsPrecision,
+            timestampIso: new Date().toISOString(),
+            mapsUrl: `https://www.google.com/maps/search/?api=1&query=$?q=${draft.gpsLatitud},${draft.gpsLongitud}`
+        },
+        
+        // Imágenes preparadas
+        imagenes: {}
+    };
+
+    // Añadir imágenes si existen en el borrador
+    if (draft.fotoInicio_base64) payload.imagenes.foto_inicio = { base64: draft.fotoInicio_base64, mimeType: 'image/jpeg' };
+    if (draft.fotoFinJornada_base64) payload.imagenes.foto_fin_jornada = { base64: draft.fotoFinJornada_base64, mimeType: 'image/jpeg' };
+    if (draft.fotoFinEvento_base64) payload.imagenes.foto_fin_evento = { base64: draft.fotoFinEvento_base64, mimeType: 'image/jpeg' };
+    if (draft.fotoOdoCombustible_base64) payload.imagenes.foto_odometro_combustible = { base64: draft.fotoOdoCombustible_base64, mimeType: 'image/jpeg' };
+    if (draft.fotoComprobante_base64) payload.imagenes.foto_comprobante_pago = { base64: draft.fotoComprobante_base64, mimeType: 'image/jpeg' };
+
+    // 4. Enviar mediante Fetch
+    try {
+        const response = await fetch(ENDPOINT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showToast('¡Reporte enviado exitosamente!', 'success');
+            btnEnviar.innerHTML = '<i class="fas fa-check"></i> ENVIADO';
+            btnEnviar.style.background = '#10b981';
+            
+            // Limpiar borrador para el siguiente día
+            localStorage.removeItem(DRAFT_KEY);
+            
+            // Redirigir al inicio después de 3 segundos
+            setTimeout(() => {
+                window.location.href = 'vehiculos.html';
+            }, 3000);
+            
+        } else {
+            throw new Error(result.message || 'Error desconocido del servidor');
+        }
+
+    } catch (error) {
+        showToast('Fallo al enviar: ' + error.message, 'error');
+        btnEnviar.innerHTML = '<i class="fas fa-exclamation-triangle"></i> REINTENTAR ENVÍO';
+        btnEnviar.style.background = '#ef4444';
+        btnEnviar.style.opacity = '1';
+        btnEnviar.disabled = false;
+    }
 }
 
-function updateCrewBlocks() {
-  const crew = selectedRadio('tipoCuadrilla');
-  hideAllCrewBlocks();
-  clearChecks('trabajoMantenimiento');
-  clearChecks('trabajoInstalacion');
+// ==========================================
+// 6. INICIALIZADOR GENERAL
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Restaurar datos al abrir cualquier página
+    restoreState();
+    
+    // 2. Activar el auto-guardado
+    setupAutoSave();
+    
+    // 3. Activar compresión de fotos (Solo aplica en la página 3)
+    setupImageCompression();
 
-  if (crew === 'Mantenimiento') getEl('bloqueMantenimiento').classList.remove('hidden');
-  if (crew === 'Instalaciones') getEl('bloqueInstalaciones').classList.remove('hidden');
-}
+    // 4. Activar restricciones numéricas
+    document.querySelectorAll('input[inputmode="numeric"]').forEach(input => {
+        input.addEventListener('input', () => { input.value = input.value.replace(/\D+/g, ''); });
+    });
 
-function updateEventBlocks() {
-  const eventType = selectedRadio('tipoJornada');
-  hideAllEventBlocks();
+    // 5. Configurar Botón de Envío (Solo en la página 4)
+    const btnEnviar = getEl('btnEnviarFinal');
+    if (btnEnviar) {
+        btnEnviar.addEventListener('click', enviarAlServidor);
+    }
 
-  if (eventType === 'Inicio de Jornada') getEl('bloqueInicio').classList.remove('hidden');
-  if (eventType === 'Fin de Jornada') getEl('bloqueFinJornada').classList.remove('hidden');
-  if (eventType === 'Fin de Evento') getEl('bloqueFinEvento').classList.remove('hidden');
-  if (eventType === 'Cargó combustible') getEl('bloqueCombustible').classList.remove('hidden');
-}
-
-function attachNumericGuards() {
-  document.querySelectorAll('.numeric-only').forEach(input => {
-    input.addEventListener('input', () => { input.value = onlyDigits(input.value); });
-  });
-
-  document.querySelectorAll('.decimal-input').forEach(input => {
-    input.addEventListener('input', () => { input.value = input.value.replace(/[^\d.,]/g, ''); });
-  });
-}
-
-function resetAll() {
-  document.querySelectorAll('input').forEach(el => {
-    if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
-    else el.value = '';
-  });
-  document.querySelectorAll('textarea').forEach(el => el.value = '');
-  hideAllCrewBlocks();
-  hideAllEventBlocks();
-  showToast('Formulario reiniciado', 'success');
-}
-
-function validateBase() {
-  const required = [
-    ['fecha', 'Debes ingresar la fecha.'],
-    ['cedula', 'Debes ingresar la cédula.'],
-    ['apellidos', 'Debes ingresar los apellidos.'],
-    ['nombre', 'Debes ingresar el nombre.'],
-    ['placa', 'Debes ingresar la placa.']
-  ];
-
-  for (const [id, message] of required) {
-    if (!getEl(id).value.trim()) return message;
-  }
-
-  if (onlyDigits(getEl('cedula').value).length < 10) return 'La cédula debe tener 10 dígitos.';
-  if (!selectedRadio('tipoCuadrilla')) return 'Debes seleccionar el tipo de cuadrilla.';
-  if (!selectedRadio('tipoJornada')) return 'Debes seleccionar el tipo de jornada.';
-
-  if (selectedRadio('tipoCuadrilla') === 'Mantenimiento' && selectedChecks('trabajoMantenimiento').length === 0) {
-    return 'Selecciona al menos un trabajo de mantenimiento.';
-  }
-  if (selectedRadio('tipoCuadrilla') === 'Instalaciones' && selectedChecks('trabajoInstalacion').length === 0) {
-    return 'Selecciona al menos un trabajo de instalaciones.';
-  }
-  return '';
-}
-
-function generateSummary() {
-  const baseError = validateBase();
-  if (baseError) { showToast(baseError, 'warning'); return; }
-
-  const crew = selectedRadio('tipoCuadrilla');
-  const eventType = selectedRadio('tipoJornada');
-  const crewTasks = crew === 'Mantenimiento' ? selectedChecks('trabajoMantenimiento') : selectedChecks('trabajoInstalacion');
-
-  const lines = [
-    'REGISTRO DIARIO DE VEHÍCULO',
-    '============================',
-    `Fecha: ${getEl('fecha').value}`,
-    `Cédula: ${onlyDigits(getEl('cedula').value)}`,
-    `Apellidos: ${getEl('apellidos').value.trim()}`,
-    `Nombre: ${getEl('nombre').value.trim()}`,
-    `Vehículo / Placa: ${getEl('placa').value.trim().toUpperCase()}`,
-    '',
-    `Tipo de cuadrilla: ${crew}`,
-    `Trabajo seleccionado: ${crewTasks.join(', ')}`,
-    '',
-    `Evento de jornada: ${eventType}`,
-  ];
-
-  if (eventType === 'Inicio de Jornada') {
-    lines.push(`Odómetro inicio: ${onlyDigits(getEl('odoInicio').value)} km`);
-    lines.push(`Foto odómetro: ${fileName('fotoInicio')}`);
-  }
-  if (eventType === 'Fin de Jornada') {
-    lines.push(`Odómetro final de jornada: ${onlyDigits(getEl('odoFinJornada').value)} km`);
-    lines.push(`Foto final: ${fileName('fotoFinJornada')}`);
-  }
-  if (eventType === 'Fin de Evento') {
-    lines.push(`Odómetro final de evento: ${onlyDigits(getEl('odoFinEvento').value)} km`);
-    lines.push(`Foto odómetro: ${fileName('fotoFinEvento')}`);
-  }
-  if (eventType === 'Cargó combustible') {
-    lines.push(`Odómetro carga combustible: ${onlyDigits(getEl('odoCombustible').value)} km`);
-    lines.push(`Galones: ${getEl('galones').value.trim()}`);
-    lines.push(`Costo total USD: ${getEl('costo').value.trim()}`);
-    lines.push(`Foto comprobante: ${fileName('fotoComprobante')}`);
-  }
-
-  getEl('summaryOutput').value = lines.join('\n');
-  showToast('Resumen generado', 'success');
-}
-
-async function copySummary() {
-  const content = getEl('summaryOutput').value.trim();
-  if (!content) { showToast('Primero genera el resumen', 'warning'); return; }
-  try {
-    await navigator.clipboard.writeText(content);
-    showToast('Resumen copiado', 'success');
-  } catch (error) {
-    showToast('No se pudo copiar automáticamente', 'error');
-  }
-}
-
-// Futura función para enviar a Google Sheets
-function enviarFormulario() {
-    showToast('Funcionalidad de envío en construcción', 'warning');
-}
-
-function init() {
-  attachNumericGuards();
-  document.querySelectorAll('input[name="tipoCuadrilla"]').forEach(el => el.addEventListener('change', updateCrewBlocks));
-  document.querySelectorAll('input[name="tipoJornada"]').forEach(el => el.addEventListener('change', updateEventBlocks));
-}
-
-document.addEventListener('DOMContentLoaded', init);
+    // 6. Configurar lógica especial del GPS (Página 4)
+    const btnGps = getEl('btnCapturarGps');
+    if (btnGps) {
+        btnGps.addEventListener('click', function() {
+            showToast('Buscando satélites...', 'warning');
+            navigator.geolocation.getCurrentPosition(
+                function(posicion) {
+                    // Mostrar en pantalla
+                    getEl('gpsResultados').style.display = 'block';
+                    getEl('lblLat').innerText = posicion.coords.latitude;
+                    getEl('lblLng').innerText = posicion.coords.longitude;
+                    getEl('lblPrecision').innerText = Math.round(posicion.coords.accuracy);
+                    
+                    // Guardar en la memoria para el envío
+                    saveToDraft('gpsLatitud', posicion.coords.latitude);
+                    saveToDraft('gpsLongitud', posicion.coords.longitude);
+                    saveToDraft('gpsPrecision', Math.round(posicion.coords.accuracy));
+                    
+                    btnGps.innerHTML = '<i class="fas fa-check"></i> GPS Capturado';
+                    btnGps.style.background = '#10b981';
+                    showToast('GPS Satelital obtenido', 'success');
+                },
+                function(error) {
+                    showToast('Error GPS: ' + error.message, 'error');
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
+        });
+    }
+});

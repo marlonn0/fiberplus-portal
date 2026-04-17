@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuadrilla | Fiberplus</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/form-vehiculo.css" />
+</head>
+<body>
+  
+  <main class="app">
+    
+    <a href="vehiculos.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+
+    <header class="main-header">
+        <div class="logo-box">
+            <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus">
+        </div>
+        <br>
+        <span class="badge-brand">Paso 2 de 4</span>
+        <h1>Tipo de Cuadrilla</h1>
+        <p>Seleccione su rol y las actividades a realizar hoy.</p>
+    </header>
+
+    <section id="tipo-cuadrilla" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-hard-hat"></i></div>
+          <div>
+            <h2>Rol de Trabajo</h2>
+            <p>Especifique sus tareas</p>
+          </div>
+        </div>
+      </div>
+
+      <form id="formCuadrillaVehiculo">
+        <div class="radio-grid">
+          <label class="choice-card">
+            <input type="radio" name="tipoCuadrilla" value="Mantenimiento" onchange="mostrarOpciones()">
+            <i class="fas fa-wrench"></i> Mantenimiento
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="tipoCuadrilla" value="Instalaciones" onchange="mostrarOpciones()">
+            <i class="fas fa-network-wired"></i> Instalaciones
+          </label>
+        </div>
+
+        <div id="bloqueMantenimiento" class="conditional-block hidden">
+          <label style="margin-bottom: 15px;">Trabajos de Mantenimiento</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="trabajoMantenimiento" value="Preventivo"> Preventivo</label>
+            <label class="check-item"><input type="checkbox" name="trabajoMantenimiento" value="Emergente"> Emergente</label>
+            <label class="check-item"><input type="checkbox" name="trabajoMantenimiento" value="Trabajo Especial"> Trabajo Especial</label>
+          </div>
+        </div>
+
+        <div id="bloqueInstalaciones" class="conditional-block hidden">
+          <label style="margin-bottom: 15px;">Trabajos de Instalaciones</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Tendido cable FO"> Tendido cable FO</label>
+            <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Instalación NAP"> Instalación NAP</label>
+            <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Fusiones"> Fusiones</label>
+            <label class="check-item"><input type="checkbox" name="trabajoInstalacion" value="Certificaciones"> Certificaciones</label>
+          </div>
+        </div>
+
+        <div class="action-buttons" style="justify-content: space-between;">
+          <a href="vehiculo_1_datos.html" class="btn-primary" style="background: var(--text-muted); text-decoration: none; display: inline-block;">
+            <i class="fas fa-arrow-left"></i> Atrás
+          </a>
+          <a href="vehiculo_3_jornada.html" class="btn-primary" style="text-decoration: none; display: inline-block;">
+            Siguiente: Jornada <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </form>
+    </section>
+
+  </main>
+  
+  <script>
+    function mostrarOpciones() {
+      const seleccion = document.querySelector('input[name="tipoCuadrilla"]:checked').value;
+      const bloqueMant = document.getElementById('bloqueMantenimiento');
+      const bloqueInst = document.getElementById('bloqueInstalaciones');
+
+      if (seleccion === 'Mantenimiento') {
+        bloqueMant.classList.remove('hidden');
+        bloqueInst.classList.add('hidden');
+      } else if (seleccion === 'Instalaciones') {
+        bloqueInst.classList.remove('hidden');
+        bloqueMant.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

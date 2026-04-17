@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jornada y Evidencias | Fiberplus</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/form-vehiculo.css" />
+</head>
+<body>
+  
+  <main class="app">
+    
+    <a href="vehiculos.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+
+    <header class="main-header">
+        <div class="logo-box">
+            <img src="../assets/img/logo-fiberplus.png" alt="Fiberplus">
+        </div>
+        <br>
+        <span class="badge-brand">Paso 3 de 4</span>
+        <h1>Evento de Jornada</h1>
+        <p>Seleccione el evento que está reportando e ingrese los datos del odómetro.</p>
+    </header>
+
+    <section id="jornada" class="card">
+      <div class="section-header">
+        <div class="header-left">
+          <div class="header-icon"><i class="fas fa-route"></i></div>
+          <div>
+            <h2>Reporte Actual</h2>
+            <p>Evidencias fotográficas y kilometraje</p>
+          </div>
+        </div>
+      </div>
+
+      <form id="formJornadaVehiculo">
+        <div class="radio-grid">
+          <label class="choice-card"><input type="radio" name="tipoJornada" value="Inicio de Jornada" onchange="mostrarEvento()"><i class="fas fa-play"></i> Inicio Jornada</label>
+          <label class="choice-card"><input type="radio" name="tipoJornada" value="Fin de Jornada" onchange="mostrarEvento()"><i class="fas fa-stop"></i> Fin Jornada</label>
+          <label class="choice-card"><input type="radio" name="tipoJornada" value="Cargó combustible" onchange="mostrarEvento()"><i class="fas fa-gas-pump"></i> Combustible</label>
+          <label class="choice-card"><input type="radio" name="tipoJornada" value="Fin de Evento" onchange="mostrarEvento()"><i class="fas fa-flag-checkered"></i> Fin Evento</label>
+        </div>
+
+        <div id="bloqueInicio" class="conditional-block hidden">
+          <div class="form-grid">
+            <div class="form-group">
+                <label>Odómetro Inicio (km)</label>
+                <input id="odoInicio" type="number" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Foto Odómetro</label>
+                <input id="fotoInicio" type="file" accept="image/*" class="form-input">
+            </div>
+          </div>
+        </div>
+
+        <div id="bloqueFinJornada" class="conditional-block hidden">
+          <div class="form-grid">
+            <div class="form-group"><label>Odómetro Fin (km)</label><input id="odoFinJornada" type="number" class="form-input"></div>
+            <div class="form-group"><label>Foto Odómetro</label><input id="fotoFinJornada" type="file" accept="image/*" class="form-input"></div>
+          </div>
+        </div>
+
+        <div id="bloqueFinEvento" class="conditional-block hidden">
+          <div class="form-grid">
+            <div class="form-group"><label>Odómetro Evento (km)</label><input id="odoFinEvento" type="number" class="form-input"></div>
+            <div class="form-group"><label>Foto Odómetro</label><input id="fotoFinEvento" type="file" accept="image/*" class="form-input"></div>
+          </div>
+        </div>
+
+        <div id="bloqueCombustible" class="conditional-block hidden">
+          <div class="form-grid">
+            <div class="form-group"><label>Odómetro Carga (km)</label><input id="odoCombustible" type="number" class="form-input"></div>
+            <div class="form-group"><label>Galones</label><input id="galones" type="number" step="0.01" class="form-input"></div>
+            <div class="form-group"><label>Costo Total (USD)</label><input id="costo" type="number" step="0.01" class="form-input"></div>
+            <div class="form-group"><label>Foto Comprobante</label><input id="fotoComprobante" type="file" accept="image/*" class="form-input"></div>
+          </div>
+        </div>
+
+        <div class="action-buttons" style="justify-content: space-between;">
+          <a href="vehiculo_2_cuadrilla.html" class="btn-primary" style="background: var(--text-muted); text-decoration: none; display: inline-block;">
+            <i class="fas fa-arrow-left"></i> Atrás
+          </a>
+          <a href="vehiculo_4_gps_envio.html" class="btn-primary" style="text-decoration: none; display: inline-block;">
+            Siguiente: Resumen y GPS <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </form>
+    </section>
+
+  </main>
+  
+  <script>
+    function mostrarEvento() {
+      // Ocultar todos primero
+      document.getElementById('bloqueInicio').classList.add('hidden');
+      document.getElementById('bloqueFinJornada').classList.add('hidden');
+      document.getElementById('bloqueCombustible').classList.add('hidden');
+      document.getElementById('bloqueFinEvento').classList.add('hidden');
+
+      // Saber cuál seleccionó
+      const seleccion = document.querySelector('input[name="tipoJornada"]:checked').value;
+
+      // Mostrar solo el correcto
+      if (seleccion === 'Inicio de Jornada') document.getElementById('bloqueInicio').classList.remove('hidden');
+      if (seleccion === 'Fin de Jornada') document.getElementById('bloqueFinJornada').classList.remove('hidden');
+      if (seleccion === 'Cargó combustible') document.getElementById('bloqueCombustible').classList.remove('hidden');
+      if (seleccion === 'Fin de Evento') document.getElementById('bloqueFinEvento').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

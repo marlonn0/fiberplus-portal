@@ -73,7 +73,13 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const rol = localStorage.getItem("fiberplus_rol");
-            if (!rol) { window.location.href = "https://marlonn0.github.io/fiberplus-web/"; return; }
+            
+            // EL GUARDIA DE SEGURIDAD ACTUALIZADO
+            // Si no hay rol, lo enviamos a la página pública oficial
+            if (!rol) { 
+                window.location.href = "https://fiberplus.com.ec"; // <--- AQUÍ CAMBIAMOS EL LINK
+                return; 
+            }
             
             const badge = document.getElementById("badgeRol");
             if (rol === "administrador") {
@@ -88,7 +94,7 @@
         function cerrarSesion() {
             if(confirm("¿Estás seguro que deseas cerrar la sesión operativa?")) {
                 localStorage.removeItem("fiberplus_rol");
-                window.location.href = "https://marlonn0.github.io/fiberplus-web/";
+                window.location.href = "https://fiberplus.com.ec"; // <--- AQUÍ TAMBIÉN AL SALIR
             }
         }
     </script>
